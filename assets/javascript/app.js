@@ -33,9 +33,6 @@ $.ajax(settings).done(function (response) {
 	$("#panel-left").append($('<p>').text("Release Date: " + response[0].release_dates[0].human));
 	
 	$(".game").append($('<p>').text("Story: " + response[0].storyline));
-
-<a href="/platforms/win" data-reactid="44">PC (Microsoft Windows)</a>
-
  });	
 })
 });
