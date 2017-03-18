@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-var searchQuery= "horizon-zero-dawn"
+var searchQuery= "uncharted-4"
 
 var settings = {
   "async": true,
@@ -28,7 +28,7 @@ $.ajax(settings).done(function (response) {
 	
 	$("#thumbnail").attr("src", url);
 	$("#panel-left, #panel-top").html($('<p>').text("Title: " +response[0].name));
-	$("#panel-top").append($('<p>').text("Rating: " + response[0].aggregated_rating));
+	$("#panel-top").append($('<p>').text("Rating: " + parseInt(response[0].aggregated_rating)));
 	$("#summary").html($('<p>').text("Summary: " + response[0].summary));
 	$("#panel-left").append($('<p>').text("Release Date: " + response[0].release_dates[0].human));
 	
