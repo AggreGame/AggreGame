@@ -2,6 +2,8 @@ body {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #main-content {
