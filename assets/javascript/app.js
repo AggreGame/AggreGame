@@ -80,7 +80,4 @@ $.ajax(twitchSettings).done(function (response) {
 
 });
 
-
-// DO NOT CODE BELOW THIS LINE: END OF FILE
-// ======================================================================
 });
