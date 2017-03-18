@@ -1,9 +1,11 @@
 body {
 	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
 #main-content {
-	min-height: inherit;
+	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
 }
