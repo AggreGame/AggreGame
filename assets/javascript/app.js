@@ -26,16 +26,17 @@ $.ajax(databaseSettings).done(function (response) {
   $.ajax(databaseSettings).done(function (response) {
  	console.log(response);
  	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id;
+ 	var backgroundImg = "background-image:url('https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png')";
 
+ 	$("body").attr("style", backgroundImg);
 
-
-    $("#thumbnail").attr("src", url);
-    $("#game-title").html("<strong>" + response[0].name + "</strong>");
-    $("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
-    $("#summary").text(response[0].summary);
-    $("#release-date").text("Release Date: " + response[0].release_dates[0].human);
-
-    $(".game").append($('<p>').text("Story: " + response[0].storyline));
+	$("#thumbnail").attr("src", url);
+	$("#game-title").html("<strong>" + response[0].name + "</strong>");
+	$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
+	$("#summary").text(response[0].summary);
+	$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
+	
+	$(".game").append($('<p>').text("Story: " + response[0].storyline));
 
  });
 })
