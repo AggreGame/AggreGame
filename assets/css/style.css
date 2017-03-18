@@ -1,3 +1,23 @@
 body {
 	min-height: 100vh;
 }
+
+#main-content {
+	min-height: inherit;
+	display: flex;
+	flex-direction: column;
+}
+
+#video-content {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+#twitch-content {
+	flex-grow: 1;
+}
+
+#youtube-content {
+	flex-grow: 1;
+}
