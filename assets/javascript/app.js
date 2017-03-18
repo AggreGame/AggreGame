@@ -23,8 +23,12 @@ $.ajax(settings).done(function (response) {
 
   $.ajax(settings).done(function (response) {
  	console.log(response);
- 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id
-	
+
+ 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id;
+ 	var backgroundImg = "background-image:url('https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png')";
+
+ 	$("body").attr("style", backgroundImg);
+
 	$("#thumbnail").attr("src", url);
 	$("#game-title").html("<strong>" + response[0].name + "</strong>");
 	$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
@@ -35,3 +39,4 @@ $.ajax(settings).done(function (response) {
   });	
 });
 });
+
