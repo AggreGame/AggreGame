@@ -19,12 +19,19 @@ nav .brand-logo {
     transform: translateX(-50%);
 }
 
+#search-suggestions {
+	margin: 0 auto;
+	width: 75vw;
+}
+
 #search-bar-wrapper {
 	flex-grow: 1;
 }
 
 #main-search-bar {
 	margin: 0 auto;
+	margin-top: 50px;
+
 	width: 80vw;
 }
 

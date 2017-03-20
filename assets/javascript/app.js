@@ -1,38 +1,48 @@
 $(document).ready(function() {
-
-var searchQuery= "uncharted-4"
-
-var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchQuery,
-  "method": "GET",
-  "headers": {
-    "x-mashape-key": "8c4luXnQFumshyCCQ14GeO6WyMNHp1g3smBjsnYaWNSQ3eZl0a",
-    "accept": "application/json",
-    "cache-control": "no-cache",
-    "postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
-  }
-}
-
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  console.log(response[0].id);
-  settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*"
-  console.log(settings.url)
-
-  $.ajax(settings).done(function (response) {
- 	console.log(response);
- 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id
- 	
+	var timer;
 	
-	$("#thumbnail").attr("src", url);
-	$("#panel-left, #panel-top").html($('<p>').text("Title: " +response[0].name));
-	$("#panel-top").append($('<p>').text("Rating: " + parseInt(response[0].aggregated_rating)));
-	$("#summary").html($('<p>').text("Summary: " + response[0].summary));
-	$("#panel-left").append($('<p>').text("Release Date: " + response[0].release_dates[0].human));
-	
-	$(".game").append($('<p>').text("Story: " + response[0].storyline));
- });	
-})
+	function searchIgdb(searchTerm) {
+		var settings = {
+		  "async": true,
+		  "crossDomain": true,
+		  "url": "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm,
+		  "method": "GET",
+		  "headers": {
+		    "x-mashape-key": "8c4luXnQFumshyCCQ14GeO6WyMNHp1g3smBjsnYaWNSQ3eZl0a",
+		    "accept": "application/json",
+		    "cache-control": "no-cache",
+		    "postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
+		  }
+		}
+
+		$.ajax(settings).done(function (response) {
+		  for (var i = 0; i < 5; i++) {
+	  		settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
+		  	console.log(settings.url)
+		  	$.ajax(settings).done(function (response) {
+			 	console.log(response);
+			 	var suggestion = $("<li class='collection-item'></li>");
+			 	suggestion.text(response[0].name);
+			 	suggestion.attr("id", response[0].id);
+			 	$("#search-suggestions").append(suggestion);
+			 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big;/" + response[0].cover.cloudinary_id
+			 });
+		  }
+
+		});
+	}
+
+	$("#search").on("keydown", function(event) {
+		// Only let user press backspace or numbers
+		clearTimeout(timer);
+		var searchTerm = $("#search").val();
+		timer = setTimeout(function() {
+			$("#search-suggestions").empty();
+			searchIgdb(searchTerm);
+		}, 500);
+    });
+
+    $("#search-bar-wrapper").on("click", ".collection-item", function() {
+    	console.log($(this).attr("id"));
+    });
 });
