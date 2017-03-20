@@ -14,18 +14,18 @@
 
 <body>
 	<!-- header -->
-	<nav id="header">
-		<div class="nav-wrapper" id="header-wrapper">
-			<a href="#" class="brand-logo center">AggreGame</a>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#!" id="logo" class="brand-logo">AggreGame</a>
 			<ul class="right">
-				<li><a href="sass.html"><i class="material-icons left">search</i>Search</a></li>
+				<li><a id="search-link" href="sass.html"><i class="material-icons left">search</i>Search</a></li>
 			</ul>
 		</div>
 	</nav>
 	<!-- end header -->
 	<!-- Search bar  -->
-	<nav class = "main-search-bar">
-		<div class="nav-wrapper">
+	<div id="search-bar-wrapper">
+		<nav id="main-search-bar">
 			<form>
 				<div class="input-field">
 					<input id="search" type="search" required placeholder="Twitch streams, reviews, ratings, and more...just enter a title!">
@@ -33,36 +33,40 @@
 					<i class="material-icons">close</i>
 				</div>
 			</form>
-		</div>
-	</nav>
+		</nav>
+	    <ul id="search-suggestions" class="collection" style="clear: both;">
+		</ul>
+	</div>
 	<!-- end search bar -->
 	<div class="hide" id="main-content">
 		<div id="overview-content" class="container">
 			<div class="row">
-				<div class="col s3">
+				<div class="col s12 m3">
 					<div class="card">
 						<div class="card-image">
 							<img id="thumbnail" src="http://placehold.it/350x350">
-							<span class="card-title">Game Title</span>
 						</div>
 						<div class="card-content" id="panel-left">
-							<p>I am a very simple card. I am good at containing small bits of information.</p>
+							<p id="game-rating-user">User Rating</p>
+							<p id="game-rating-critic">Critic Rating</p>
 						</div>
 						<div class="card-action">
-							<a href="#">Amazon Link</a>
+							<a id="amazon-link" href="#">Buy on Amazon</a>
 						</div>
 					</div>
 				</div>
-				<div class="col s9">
+				<div class="col s12 m9">
 					<div class="row">
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content" id="panel-top">
-									<p>Metacritic Raiting, other data?</p>
+									<h4 id="game-title">Placeholder Title</h4>
+									<h6 id="publisher-name">Publisher Name</h6>
+									<h6 id="release-date">Release Date</h6>
 								</div>
 								<div class="divider"></div>
-								<div class="card-content" id="summary">
-									<p>
+								<div class="card-content" id="summary-pane">
+									<p id="summary" class="flow-text">
 										Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis 
 									</p>
 								</div>
