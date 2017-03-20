@@ -14,18 +14,18 @@
 
 <body>
 	<!-- header -->
-	<nav id="header">
-		<div class="nav-wrapper" id="header-wrapper">
-			<a href="#" class="brand-logo center">AggreGame</a>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#!" id="logo" class="brand-logo">AggreGame</a>
 			<ul class="right">
-				<li><a href="sass.html"><i class="material-icons left">search</i>Search</a></li>
+				<li><a id="search-link" href="sass.html"><i class="material-icons left">search</i>Search</a></li>
 			</ul>
 		</div>
 	</nav>
 	<!-- end header -->
 	<!-- Search bar  -->
-	<nav class = "main-search-bar">
-		<div class="nav-wrapper">
+	<div id="search-bar-wrapper" class="valign-wrapper">
+		<nav id="main-search-bar" class="valign">
 			<form>
 				<div class="input-field">
 					<input id="search" type="search" required placeholder="Twitch streams, reviews, ratings, and more...just enter a title!">
@@ -33,8 +33,8 @@
 					<i class="material-icons">close</i>
 				</div>
 			</form>
-		</div>
-	</nav>
+		</nav>
+	</div>
 	<!-- end search bar -->
 	<div class="hide" id="main-content">
 		<div id="overview-content" class="container">
