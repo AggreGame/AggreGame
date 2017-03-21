@@ -33,15 +33,53 @@ $(document).ready(function() {
 		});
 	};
 
-	$("#search").on("keydown", function(event) {
+	// Hides drop down menu from search
+	function hideSuggestions () {
+		$("#search-suggestions").addClass("hide");
+		clearTimeout(timer);
+	}
+
+	// If the input field is blank, stop making ajax calls and hide 
+	// previous search results
+	$("#search").on("keyup", function(event) {
+		if(!this.value) {
+			hideSuggestions();
+		}
+	});
+
+	// Clear value of search bar when "x" is clicked
+	// IMPORTANT!! NEED TO ADD CLOSE OUT FUNCTIONALITY
+	$("#close").on("click", function() {
+		$("#search").val('');
+		hideSuggestions();
+	});
+
+	// Changed value to "keypress" from "keydown" to avoid automatic searches when 
+	// not-printing keys pressed
+	$("#search").on("keypress", function(event) {
+		// If input is blank, clear the ajax call
+		if (!this.value) {
+			hideSuggestions();
+		}
+		console.log($("#search").val().trim());
 		// Only let user press backspace or numbers
 		clearTimeout(timer);
 		var searchTerm = $("#search").val();
 		timer = setTimeout(function() {
 			$("#search-suggestions").empty();
+			$("#search-suggestions").removeClass("hide");
 			searchIgdb(searchTerm);
 		}, 500);
     });
+
+	// Populate the page with information upon pressing the enter key
+	// This does not work yet
+	$("#search").on("keypress", function(event) {
+		var searchTerm = $("#search").val().trim();
+		if (event.which === 13) {
+			populatePage(searchTerm);
+		};
+	});
 
     $("#search-bar-wrapper").on("click", ".collection-item", function() {
     	populatePage($(this).attr("id"));

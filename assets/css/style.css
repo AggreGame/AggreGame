@@ -26,6 +26,11 @@ nav .brand-logo {
 	width: 75vw;
 }
 
+.collection-item:hover {
+	cursor: pointer;
+	background-color: #DBD4D4;
+}
+
 #search-bar-wrapper {
 	flex-grow: 1;
 }
