@@ -33,6 +33,31 @@ $(document).ready(function() {
 		});
 	};
 
+	// Take a search value and populate the page with the first result returned
+	// COULD BE ALTERED TO BE A LIST (AS OPPOSED TO FIRST SEARCH TERM)
+	function populateWithIGDB_ID(searchTerm) {
+		var settings = {
+		  "async": true,
+		  "crossDomain": true,
+		  "url": "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm,
+		  "method": "GET",
+		  "headers": {
+		    "x-mashape-key": "8c4luXnQFumshyCCQ14GeO6WyMNHp1g3smBjsnYaWNSQ3eZl0a",
+		    "accept": "application/json",
+		    "cache-control": "no-cache",
+		    "postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
+		  }
+		}
+		
+		$.ajax(settings).done(function (response) {
+			settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*"
+		  	$.ajax(settings).done(function (response) {
+		  		var responseId = response[0].id;
+		  		populatePage(responseId);
+		  	});
+		});
+	}
+
 	// Hides drop down menu from search
 	function hideSuggestions () {
 		$("#search-suggestions").addClass("hide");
@@ -72,12 +97,18 @@ $(document).ready(function() {
 		}, 500);
     });
 
+    // Populate the page with information upon clicking the search icon
+    $(".label-icon").on("click", function(event) {
+    	var searchTerm = $("#search").val().trim();
+    	populateWithIGDB_ID(searchTerm);
+    });
+
 	// Populate the page with information upon pressing the enter key
-	// This does not work yet
 	$("#search").on("keypress", function(event) {
 		var searchTerm = $("#search").val().trim();
-		if (event.which === 13) {
-			populatePage(searchTerm);
+		if (searchTerm !== '' && event.which === 13) {
+			event.preventDefault();
+			$(".label-icon").click();
 		};
 	});
 
