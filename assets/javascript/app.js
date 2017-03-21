@@ -73,6 +73,7 @@ $(document).ready(function() {
     });
 
 	// Populate the page with information upon pressing the enter key
+	// This does not work yet
 	$("#search").on("keypress", function(event) {
 		var searchTerm = $("#search").val().trim();
 		if (event.which === 13) {
