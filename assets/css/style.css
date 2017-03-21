@@ -82,4 +82,8 @@ nav .brand-logo {
 	    -webkit-transform: translateX(-50%);
 	    transform: translateX(-50%);
 	}
+
+	#search-link-parent {
+		font-size: 0px;
+	}
 }
