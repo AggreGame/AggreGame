@@ -1,6 +1,11 @@
 $(document).ready(function() {
 
 	var timer;
+
+	$("#search-link-parent").on("click", function() {
+		$("#search-bar-wrapper").removeClass("hide");
+		$("#main-content").addClass("hide");
+	});
 	
 	function populateSearchSuggestions(searchTerm) {
 		var settings = {
@@ -119,7 +124,7 @@ $(document).ready(function() {
 	 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id;
 	 	var backgroundImg = "background-image:url('https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png')";
 
-	 	$("body").attr("style", backgroundImg);
+	 	$("#page-bg").attr("style", backgroundImg);
 		$("#thumbnail").attr("src", url);
 		$("#game-title").html("<strong>" + response[0].name + "</strong>");
 		$("#game-rating-user").text("User Rating: " + parseInt(response[0].rating));
