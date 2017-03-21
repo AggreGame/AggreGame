@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	var searchQuery= "arkham-knight"
+	var searchQuery= "bioshock-infinite"
 	var iframe = $("<iframe>")
 	// IGDB API
 	// ======================================================================
