@@ -100,8 +100,20 @@ $(document).ready(function() {
     // Populate the page with information upon clicking the search icon
     $(".label-icon").on("click", function(event) {
     	var searchTerm = $("#search").val().trim();
+    	//Animate the search bar
+    	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	populateWithIGDB_ID(searchTerm);
     });
+
+    // Add animation functionality
+	$.fn.extend({
+		animateCss: function (animationName) {
+			var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+			this.addClass('animated ' + animationName).one(animationEnd, function() {
+		    	$(this).removeClass('animated ' + animationName);
+			});
+		}
+	});
 
 	// Populate the page with information upon pressing the enter key
 	$("#search").on("keypress", function(event) {
