@@ -18,7 +18,7 @@
 		<div class="nav-wrapper">
 			<a href="#!" id="logo" class="brand-logo">AggreGame</a>
 			<ul class="right">
-				<li><a id="search-link" href="sass.html"><i class="material-icons left">search</i>Search</a></li>
+				<li><a id="search-link" href="sass.html"><i class="material-icons left">search</i><span id="search-nav-text">Search</span></a></li>
 			</ul>
 		</div>
 	</nav>
@@ -28,13 +28,13 @@
 		<nav id="main-search-bar">
 			<form>
 				<div class="input-field">
-					<input id="search" type="search" required placeholder="Twitch streams, reviews, ratings, and more...just enter a title!">
+					<input id="search" type="search" autocomplete="off" required placeholder="Twitch streams, reviews, ratings, and more...just enter a title!">
 					<label class="label-icon" for="search"><i class="material-icons">search</i></label>
-					<i class="material-icons">close</i>
+					<i class="material-icons" id="close">close</i>
 				</div>
 			</form>
 		</nav>
-	    <ul id="search-suggestions" class="collection" style="clear: both;">
+	    <ul id="search-suggestions" class="collection hide" style="clear: both;">
 		</ul>
 	</div>
 	<!-- end search bar -->
