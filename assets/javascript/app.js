@@ -35,9 +35,6 @@ $(document).ready(function() {
 			$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
 			$("#summary").text(response[0].summary);
 			$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
-			
-			$(".game").append($('<p>').text("Story: " + response[0].storyline));
-
 	 });
 	})
 
