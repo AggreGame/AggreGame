@@ -1,6 +1,11 @@
 $(document).ready(function() {
 
 	var timer;
+
+	$("#search-link-parent").on("click", function() {
+		$("#search-bar-wrapper").removeClass("hide");
+		$("#main-content").addClass("hide");
+	});
 	
 	function searchIgdb(searchTerm) {
 		var settings = {
