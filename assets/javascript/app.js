@@ -153,7 +153,8 @@ $(document).ready(function() {
 	});
 
     function populatePageFromNewQuery(searchTerm) {
-    	var databaseSettings = igdbSettings;
+    	youtubeApiCall(searchTerm);
+		var databaseSettings = igdbSettings;
 		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		$.ajax(databaseSettings).done(function (response) {
 	  		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*";
@@ -169,12 +170,15 @@ $(document).ready(function() {
 				$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
 				$("#summary").text(response[0].summary);
 				$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
+				
+				
 			});
 		});
 		prepPageForContentViewing();
     };
 
     function populatePageFromSuggestion(htmlSuggestion) {
+		youtubeApiCall(htmlSuggestion.attr("data-title"));
 	 	var url = htmlSuggestion.attr("data-thumb");
 	 	var backgroundImg = "background-image:url(" + htmlSuggestion.attr("data-background-img") + ");"
 
@@ -186,6 +190,7 @@ $(document).ready(function() {
 		$("#summary").text(htmlSuggestion.attr("data-summary"));
 		$("#release-date").text("Release Date: " + htmlSuggestion.attr("data-release-date"));
 		prepPageForContentViewing();
+		
     };
 
     function prepPageForContentViewing() {
@@ -226,34 +231,32 @@ $(document).ready(function() {
 
 	// youtube API
 	// ======================================================================
-	function youtubeApiCall(){
+	function youtubeApiCall(term){
 		 $.ajax({
 			 cache: false,
 			 data: $.extend({
 				 key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
-				 q: searchTerm + " game reviews",
+				 q: term + " game reviews",
 				 part: 'snippet'
 			 }, {maxResults:20,pageToken:$("#pageToken").val()}),
 			 dataType: 'json',
 			 type: 'GET',
 			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search'
+			 url: 'https://www.googleapis.com/youtube/v3/search' 
 		 })
 		.done(function(response) {
 			console.log(response);
-
+			console.log("YOUTUBE API")
 			for (var i = 0; i < 1; i++){
 				iframe = $("<iframe>")
 				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
 				iframe.attr("src", youtubeUrl);
-				$("#youtube-content").append(iframe);
+				$("#youtube-content").html(iframe);
 			}
-			youtubeApiCall();
 		});
 	};
-	
 
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
