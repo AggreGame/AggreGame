@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	var searchQuery= "bioshock-infinite"
+	var searchQuery= "witcher-3"
 	var iframe = $("<iframe>")
 	// IGDB API
 	// ======================================================================
@@ -85,7 +85,7 @@ $(document).ready(function() {
 			 cache: false,
 			 data: $.extend({
 				 key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
-				 q: searchQuery + "reviews",
+				 q: searchQuery + " game reviews",
 				 part: 'snippet'
 			 }, {maxResults:20,pageToken:$("#pageToken").val()}),
 			 dataType: 'json',
@@ -96,7 +96,7 @@ $(document).ready(function() {
 		.done(function(response) {
 			console.log(response);
 
-			for (var i = 1; i < 4; i++){
+			for (var i = 0; i < 1; i++){
 				iframe = $("<iframe>")
 				var youtubeVid = response.items[i].id.videoId;
 				console.log(youtubeVid);
