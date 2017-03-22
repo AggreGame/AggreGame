@@ -17,6 +17,17 @@ $(document).ready(function() {
 		}
 	}
 
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyB7VSJ2zogjc0aH6rH-ze2qDW_Riv8BQr4",
+		authDomain: "aggre-game.firebaseapp.com",
+		databaseURL: "https://aggre-game.firebaseio.com",
+		storageBucket: "aggre-game.appspot.com",
+		messagingSenderId: "362750331357"
+	};
+	firebase.initializeApp(config);
+	var database = firebase.database();
+
     // Add animation functionality
 	$.fn.extend({
 		animateCss: function (animationName) {
@@ -29,7 +40,7 @@ $(document).ready(function() {
 
 	$("#search-link-parent").on("click", function() {
 		$("#search-bar-wrapper").removeClass("hide");
-		$("#search-bar-wrapper").animateCss("bounceInLeft");
+		$("#main-search-bar").animateCss("bounceInLeft");
 		$("#main-content").addClass("hide");
 	});
 
@@ -44,7 +55,7 @@ $(document).ready(function() {
 		clearTimeout(timer);
 		var searchTerm = $("#search").val().trim();
 		if (searchTerm !== '' && event.which === 13) {
-			$("#search-bar-wrapper").animateCss("bounceOutRight");
+			$("#main-search-bar").animateCss("bounceOutRight");
 			event.preventDefault();
 			populatePageFromNewQuery(searchTerm);
 		} else {
@@ -67,7 +78,7 @@ $(document).ready(function() {
 		var searchTerm = $("#search").val().trim();
 		//Animate the bar, but only after a search has been made
 		if (!gameSearched && searchTerm === '') {
-			$("#search-bar-wrapper").animateCss("shake");
+			$("#main-search-bar").animateCss("shake");
 		} else if (!gameSearched && searchTerm !== '') {
 			$("#search").val('');
 			hideSuggestions();
@@ -93,7 +104,7 @@ $(document).ready(function() {
     	gameSearched = true;
     	var searchTerm = $("#search").val().trim();
     	//Animate the search bar
-    	$("#search-bar-wrapper").animateCss("bounceOutRight");
+    	$("#main-search-bar").animateCss("bounceOutRight");
     	populatePageFromNewQuery(searchTerm);
     });
 
@@ -149,6 +160,7 @@ $(document).ready(function() {
 				$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
 				$("#summary").text(response[0].summary);
 				$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
+				updateMostPopular(response[0].name);
 			});
 		});
 		prepPageForContentViewing();
@@ -167,16 +179,26 @@ $(document).ready(function() {
 		$("#summary").text(htmlSuggestion.attr("data-summary"));
 		$("#release-date").text("Release Date: " + htmlSuggestion.attr("data-release-date"));
 		prepPageForContentViewing();
+		updateMostPopular(htmlSuggestion.attr("data-title"));
     };
 
     function prepPageForContentViewing() {
-    	$("#search-bar-wrapper").animateCss("bounceOutRight");
+    	$("#main-search-bar").animateCss("bounceOutRight");
     	setTimeout(function() {
     		$("#main-content").animateCss("bounceInUp");
 			$("#search-bar-wrapper").attr("class", "hide");
 			$("#main-content").removeClass("hide");
 			$("#video-content").removeClass("hide");
     	}, 500);
+    };
+
+    function updateMostPopular(term) {
+    	database.ref("popular/" + term).transaction(function(searchTerm) {
+    		if (!searchTerm) {
+    			return {count: 1};
+			}
+    		return {count: searchTerm.count += 1};
+    	});
     };
 
 	var searchQuery= "arkham-knight"
@@ -197,7 +219,7 @@ $(document).ready(function() {
       "accept": "application/vnd.twitchtv.v4+json",
     }
   }
-	  $.ajax(twitchSettings).done(function (response) {
+	 $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
