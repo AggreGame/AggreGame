@@ -1,6 +1,24 @@
 $(document).ready(function() {
 
 	var timer;
+	// Make a game searched variable so that 
+	var gameSearched = false;
+
+	$("#search-link-parent").on("click", function() {
+		$("#search-bar-wrapper").removeClass("hide");
+		$("#search-bar-wrapper").animateCss("bounceInLeft");
+		$("#main-content").addClass("hide");
+	});
+
+    // Add animation functionality
+	$.fn.extend({
+		animateCss: function (animationName) {
+			var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+			this.addClass('animated ' + animationName).one(animationEnd, function() {
+		    	$(this).removeClass('animated ' + animationName);
+			});
+		}
+	});
 	
 	function searchIgdb(searchTerm) {
 		var settings = {
@@ -33,6 +51,31 @@ $(document).ready(function() {
 		});
 	};
 
+	// Take a search value and populate the page with the first result returned
+	// COULD BE ALTERED TO BE A LIST (AS OPPOSED TO FIRST SEARCH TERM)
+	function populateWithIGDB_ID(searchTerm) {
+		var settings = {
+		  "async": true,
+		  "crossDomain": true,
+		  "url": "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm,
+		  "method": "GET",
+		  "headers": {
+		    "x-mashape-key": "8c4luXnQFumshyCCQ14GeO6WyMNHp1g3smBjsnYaWNSQ3eZl0a",
+		    "accept": "application/json",
+		    "cache-control": "no-cache",
+		    "postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
+		  }
+		}
+		
+		$.ajax(settings).done(function (response) {
+			settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*"
+		  	$.ajax(settings).done(function (response) {
+		  		var responseId = response[0].id;
+		  		populatePage(responseId);
+		  	});
+		});
+	}
+
 	// Hides drop down menu from search
 	function hideSuggestions () {
 		$("#search-suggestions").addClass("hide");
@@ -48,10 +91,23 @@ $(document).ready(function() {
 	});
 
 	// Clear value of search bar when "x" is clicked
-	// IMPORTANT!! NEED TO ADD CLOSE OUT FUNCTIONALITY
 	$("#close").on("click", function() {
-		$("#search").val('');
-		hideSuggestions();
+		var searchTerm = $("#search").val().trim();
+		//Animate the bar, but only after a search has been made
+		if (!gameSearched && searchTerm === '') {
+			$("#search-bar-wrapper").animateCss("shake");
+		} else if (!gameSearched && searchTerm !== '') {
+			$("#search").val('');
+			hideSuggestions();
+		} else if (gameSearched && searchTerm !== '') {
+			$("#search-bar-wrapper").addClass("hide");
+			$("#main-content").removeClass("hide");
+		} else {
+			$("#search-bar-wrapper").addClass("hide");
+			$("#main-content").removeClass("hide");
+			$("#search").val('');
+			hideSuggestions();
+		}
 	});
 
 	// Changed value to "keypress" from "keydown" to avoid automatic searches when 
@@ -72,17 +128,32 @@ $(document).ready(function() {
 		}, 500);
     });
 
+    // Populate the page with information upon clicking the search icon
+    $(".label-icon").on("click", function(event) {
+    	// Make it so a game has been searched
+    	gameSearched = true;
+    	var searchTerm = $("#search").val().trim();
+    	//Animate the search bar
+    	$("#search-bar-wrapper").animateCss("bounceOutRight");
+    	populateWithIGDB_ID(searchTerm);
+    	$("#main-content").animateCss("bounceInUp");
+    });
+
 	// Populate the page with information upon pressing the enter key
-	// This does not work yet
 	$("#search").on("keypress", function(event) {
 		var searchTerm = $("#search").val().trim();
-		if (event.which === 13) {
-			populatePage(searchTerm);
+		if (searchTerm !== '' && event.which === 13) {
+			gameSearched = true;
+			$("#search-suggestions").addClass("hide");
+			event.preventDefault();
+			$(".label-icon").click();
 		};
 	});
 
     $("#search-bar-wrapper").on("click", ".collection-item", function() {
     	populatePage($(this).attr("id"));
+   		$("#main-content").animateCss("bounceInUp");
+    	gameSearched = true;
     });
 
     function populatePage(elementId) {
