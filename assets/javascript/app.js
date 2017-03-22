@@ -13,7 +13,7 @@ $(document).ready(function() {
 			"postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
 		}
 	}
-	// Make a game searched variable so that 
+	// Make a game searched variable so that
 	var gameSearched = false;
 
 	$("#search-link-parent").on("click", function() {
@@ -36,12 +36,12 @@ $(document).ready(function() {
 		$("#search-bar-wrapper").removeClass("hide");
 		$("#main-content").addClass("hide");
 	});
-	
+
 	function populateSearchSuggestions(searchTerm) {
 		var settings = igdbSettings;
 		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		settings.url = rawUrl.split(' ').join('+')
-		
+
 		$.ajax(settings).done(function (response) {
 		  for (var i = 0; i < 5; i++) {
 	  		settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
@@ -72,7 +72,7 @@ $(document).ready(function() {
 		clearTimeout(timer);
 	}
 
-	// If the input field is blank, stop making ajax calls and hide 
+	// If the input field is blank, stop making ajax calls and hide
 	// previous search results
 	$("#search").on("keyup", function(event) {
 		if(!this.value) {
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		}
 	});
 
-	// Changed value to "keypress" from "keydown" to avoid automatic searches when 
+	// Changed value to "keypress" from "keydown" to avoid automatic searches when
 	// not-printing keys pressed
 	$("#search").on("keypress", function(event) {
 		// If input is blank, clear the ajax call
@@ -201,7 +201,7 @@ $(document).ready(function() {
 	var iframe = $("<iframe>")
 	// IGDB API
 	// ======================================================================
-	
+
 
   // twitch API
   // ======================================================================
