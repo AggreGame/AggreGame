@@ -8,19 +8,40 @@
 	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"  media="screen,projection"/>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="icon" href="#">
 </head>
 
-<body>
+<body id="body">
 	<!-- header -->
+	<div id="page-bg">
+	</div>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#" class="brand-logo center">Logo</a>
+			<a href="index.html" id="logo" class="brand-logo">AggreGame</a>
+			<ul class="right">
+				<li><a id="search-link-parent"><i class="material-icons left" id="search-icon">search</i>Search</a></li>
+			</ul>
 		</div>
 	</nav>
 	<!-- end header -->
-	<div id="main-content">
+	<!-- Search bar  -->
+	<div id="search-bar-wrapper">
+		<nav id="main-search-bar">
+			<form>
+				<div class="input-field">
+					<input id="search" type="search" autocomplete="off" required placeholder="Twitch streams, reviews, ratings, and more...just enter a title!">
+					<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+					<i class="material-icons" id="close">close</i>
+				</div>
+			</form>
+		</nav>
+	    <ul id="search-suggestions" class="collection hide" style="clear: both;">
+		</ul>
+	</div>
+	<!-- end search bar -->
+	<div class="hide" id="main-content">
 		<div id="overview-content" class="container">
 			<div class="row">
 				<div class="col s12 m3">
@@ -49,7 +70,7 @@
 								<div class="divider"></div>
 								<div class="card-content" id="summary-pane">
 									<p id="summary" class="flow-text">
-										Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis 
+										Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis Game synopsis
 									</p>
 								</div>
 							</div>
@@ -64,8 +85,7 @@
 				<li class="tab col s6"><a href="#twitch-content">Twitch</a></li>
 				<li class="tab col s6"><a href="#youtube-content">YouTube</a></li>
 			</ul>
-			<div id="twitch-content" class="col s12 blue">Twitch Content
-			</div>
+			<div id="twitch-content" class="col s12 blue"></div>
 			<div id="youtube-content" class="col s12 red">YouTube Content</div>
 		</div>
 	</div>
