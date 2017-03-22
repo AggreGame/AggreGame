@@ -132,6 +132,7 @@ $(document).ready(function() {
 	}
 
     function populatePageFromNewQuery(searchTerm) {
+        youtubeApiCall(searchTerm);
     	var databaseSettings = igdbSettings;
 		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		$.ajax(databaseSettings).done(function (response) {
@@ -154,6 +155,7 @@ $(document).ready(function() {
     };
 
     function populatePageFromSuggestion(htmlSuggestion) {
+        youtubeApiCall(htmlSuggestion.attr("data-title"));
 	 	var url = htmlSuggestion.attr("data-thumb");
 	 	var backgroundImg = "background-image:url(" + htmlSuggestion.attr("data-background-img") + ");"
 
@@ -203,36 +205,32 @@ $(document).ready(function() {
 	    twitch.attr("src", twitchVid);
 	    $("#twitch-content").append(twitch);
 	 });
-
-	// youtube API
-	// ======================================================================
-	function youtubeApiCall(){
+	function youtubeApiCall(term){
 		 $.ajax({
 			 cache: false,
 			 data: $.extend({
 				 key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
-				 q: searchQuery + "reviews",
+				 q: term + " game reviews",
 				 part: 'snippet'
 			 }, {maxResults:20,pageToken:$("#pageToken").val()}),
 			 dataType: 'json',
 			 type: 'GET',
 			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search'
+			 url: 'https://www.googleapis.com/youtube/v3/search' 
 		 })
 		.done(function(response) {
 			console.log(response);
-
-			for (var i = 1; i < 4; i++){
+			console.log("YOUTUBE API")
+			for (var i = 0; i < 1; i++){
 				iframe = $("<iframe>")
-				var youtubeVid = response.items[i].id.videoId;
+				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
 				iframe.attr("src", youtubeUrl);
-				$("#youtube-content").append(iframe);
+				$("#youtube-content").html(iframe);
 			}
 		});
 	};
-	youtubeApiCall();
 
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
