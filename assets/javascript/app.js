@@ -87,11 +87,15 @@ $(document).ready(function() {
 		gameSearched = true;
     });
 
+
     // Populate the page with information upon clicking the search icon
     $(".label-icon").on("click", function(event) {
-    	// Make it so a game has been searched
-    	gameSearched = true;
     	var searchTerm = $("#search").val().trim();
+    	//MAX CORRECTION--MAKE BLANK SEARCH INPUT RETURN NOTHING
+    	if (searchTerm === '') {
+    		$("#search-bar-wrapper").animateCss("jello");
+    		return false;
+    	};
     	//Animate the search bar
     	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	populatePageFromNewQuery(searchTerm);
@@ -131,6 +135,13 @@ $(document).ready(function() {
 		clearTimeout(timer);
 	}
 
+    //MAX CORRECTION---LINK AMAZON WEBSITE WITH GAME TITLE AS KEY WORDS
+    function createAmazonLink(gameTitle) {
+    	var gameKeyWords = gameTitle.replace(/\s/g, '+');
+    	var amazonLink = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords="+ gameKeyWords
+    	$("#amazon-link").attr("href", amazonLink);
+    };
+
     function populatePageFromNewQuery(searchTerm) {
         youtubeApiCall(searchTerm);
     	var databaseSettings = igdbSettings;
@@ -149,6 +160,8 @@ $(document).ready(function() {
 				$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
 				$("#summary").text(response[0].summary);
 				$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
+				//MAX CORRECTION
+				createAmazonLink(response[0].name);
 			});
 		});
 		prepPageForContentViewing();
@@ -166,6 +179,8 @@ $(document).ready(function() {
 		$("#game-rating-critic").text("Critic Rating: " + parseInt(htmlSuggestion.attr("data-critic-rating")));
 		$("#summary").text(htmlSuggestion.attr("data-summary"));
 		$("#release-date").text("Release Date: " + htmlSuggestion.attr("data-release-date"));
+		//MAX CORRECTION
+		createAmazonLink(htmlSuggestion.attr("data-title"));
 		prepPageForContentViewing();
     };
 
@@ -177,6 +192,9 @@ $(document).ready(function() {
 			$("#main-content").removeClass("hide");
 			$("#video-content").removeClass("hide");
     	}, 500);
+		//MAX CORRECTION--CHANGED GAME SEARCHED TO TRUE WHEN POPULATING PAGE 
+		//INSTEAD OF ON CLICK FROM SEARCH ICON (FIXES BUG)
+		gameSearched = true;
     };
 
 	var searchQuery= "arkham-knight"
