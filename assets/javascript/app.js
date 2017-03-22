@@ -18,13 +18,13 @@ var databaseSettings = {
 }
 
 $.ajax(databaseSettings).done(function (response) {
-  console.log(response);
-  console.log(response[0].id);
+  // console.log(response);
+  // console.log(response[0].id);
   databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*"
-  console.log(databaseSettings.url)
+  // console.log(databaseSettings.url)
 
   $.ajax(databaseSettings).done(function (response) {
- 	console.log(response);
+ // 	console.log(response);
  	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id;
 
 
@@ -55,28 +55,10 @@ var twitchSettings = {
 
 $.ajax(twitchSettings).done(function (response) {
   console.log(response);
-  // console.log(response.streams[0].channel._id);
 
-  var twitchSettings2 = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://api.twitch.tv/kraken/streams/" + response.streams[1].channel._id,
-    "method": "GET",
-    "headers": {
-      "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
-      "accept": "application/vnd.twitchtv.v4+json",
-    }
-  }
-
-  $.ajax(twitchSettings2).done(function (response) {
-    console.log(response);
-    var twitchVid = response._links.channel;
-    console.log(twitchVid);
-    var twitch = $("<iframe>");
-    // twitch.attr("src", twitchVid);
-    // $("#twitch-content").append(twitch);
-  });
-
+  var twitch = $("<img>");
+  twitch.attr("src", response.streams[0].preview.large);
+  $("#twitch-content").append(twitch);
 });
 
 
