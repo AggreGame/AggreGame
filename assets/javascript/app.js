@@ -221,8 +221,12 @@ $(document).ready(function() {
 		.done(function(response) {
 			console.log(response);
 			console.log("YOUTUBE API")
+			var card = $("<div>");
 			for (var i = 0; i < 1; i++){
-				iframe = $("<iframe>")
+				card.addClass("card large");
+				$(card).append(iframe);
+				iframe = $("<iframe>").attr("height", 500);
+				iframe.attr("width", 600);
 				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
@@ -235,3 +239,4 @@ $(document).ready(function() {
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
 });
+// Make it so youtube videos only load when clicked then work on the carrousel 
