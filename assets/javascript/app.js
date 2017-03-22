@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
 	var timer;
+	// Make a game searched variable so that 
+	var gameSearched = false;
 
 	var igdbSettings = {
 		"async": true,
@@ -14,14 +16,6 @@ $(document).ready(function() {
 			"postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
 		}
 	}
-	// Make a game searched variable so that 
-	var gameSearched = false;
-
-	$("#search-link-parent").on("click", function() {
-		$("#search-bar-wrapper").removeClass("hide");
-		$("#search-bar-wrapper").animateCss("bounceInLeft");
-		$("#main-content").addClass("hide");
-	});
 
     // Add animation functionality
 	$.fn.extend({
@@ -35,46 +29,33 @@ $(document).ready(function() {
 
 	$("#search-link-parent").on("click", function() {
 		$("#search-bar-wrapper").removeClass("hide");
+		$("#search-bar-wrapper").animateCss("bounceInLeft");
 		$("#main-content").addClass("hide");
 	});
-	
-	function populateSearchSuggestions(searchTerm) {
-		var settings = igdbSettings;
-		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
-		settings.url = rawUrl.split(' ').join('+')
-		
-		$.ajax(settings).done(function (response) {
-		  for (var i = 0; i < 5; i++) {
-	  		settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
-		  	console.log(settings.url)
-		  	$.ajax(settings).done(function (response) {
-			 	console.log(response);
-			 	var suggestion = $("<li class='collection-item'></li>");
-			 	suggestion.text(response[0].name);
-			 	suggestion.attr("id", response[0].id);
-			 	suggestion.attr("data-summary", response[0].summary);
-			 	suggestion.attr("data-user-rating", response[0].rating);
-			 	suggestion.attr("data-critic-rating", response[0].aggregated_rating);
-			 	suggestion.attr("data-release-date", response[0].release_dates[0].human);
-			 	suggestion.attr("data-background-img", "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png");
-				suggestion.attr("data-thumb", "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id);
-			 	suggestion.attr("data-title", response[0].name);
-			 	$("#search-suggestions").append(suggestion);
-			 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big;/" + response[0].cover.cloudinary_id
-			 });
-		  }
 
-		});
-	};
-
-	// Hides drop down menu from search
-	function hideSuggestions () {
-		$("#search-suggestions").addClass("hide");
+	// not-printing keys pressed
+	$("#search").on("keypress", function(event) {
+		// If input is blank, clear the ajax call
+		if (!this.value) {
+			hideSuggestions();
+		}
+		console.log($("#search").val().trim());
+		// Only let user press backspace or numbers
 		clearTimeout(timer);
-	}
+		var searchTerm = $("#search").val().trim();
+		if (searchTerm !== '' && event.which === 13) {
+			$("#search-bar-wrapper").animateCss("bounceOutRight");
+			event.preventDefault();
+			populatePageFromNewQuery(searchTerm);
+		} else {
+			timer = setTimeout(function() {
+				$("#search-suggestions").empty();
+				$("#search-suggestions").removeClass("hide");
+				populateSearchSuggestions(searchTerm);
+			}, 500);
+		}
+    });
 
-	// If the input field is blank, stop making ajax calls and hide 
-	// previous search results
 	$("#search").on("keyup", function(event) {
 		if(!this.value) {
 			hideSuggestions();
@@ -101,31 +82,6 @@ $(document).ready(function() {
 		}
 	});
 
-	// Changed value to "keypress" from "keydown" to avoid automatic searches when 
-	// not-printing keys pressed
-	$("#search").on("keypress", function(event) {
-		// If input is blank, clear the ajax call
-		if (!this.value) {
-			hideSuggestions();
-		}
-		console.log($("#search").val().trim());
-		// Only let user press backspace or numbers
-		clearTimeout(timer);
-		var searchTerm = $("#search").val().trim();
-		if (event.which === 13) {
-			$("#search-bar-wrapper").animateCss("bounceOutRight");
-			event.preventDefault();
-			clearTimeout(timer);
-			populatePageFromNewQuery(searchTerm);
-		} else {
-			timer = setTimeout(function() {
-				$("#search-suggestions").empty();
-				$("#search-suggestions").removeClass("hide");
-				populateSearchSuggestions(searchTerm);
-			}, 500);
-		}
-    });
-
     $("#search-bar-wrapper").on("click", ".collection-item", function() {
 		populatePageFromSuggestion($(this));
 		gameSearched = true;
@@ -142,16 +98,39 @@ $(document).ready(function() {
     	$("#main-content").animateCss("bounceInUp");
     });
 
-	// Populate the page with information upon pressing the enter key
-	$("#search").on("keypress", function(event) {
-		var searchTerm = $("#search").val().trim();
-		if (searchTerm !== '' && event.which === 13) {
-			gameSearched = true;
-			$("#search-suggestions").addClass("hide");
-			event.preventDefault();
-			$(".label-icon").click();
-		};
-	});
+	function populateSearchSuggestions(searchTerm) {
+		var settings = igdbSettings;
+		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
+		settings.url = rawUrl.split(' ').join('+')
+		
+		$.ajax(settings).done(function (response) {
+				for (var i = 0; i < 5; i++) {
+					settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
+					console.log(settings.url)
+					$.ajax(settings).done(function (response) {
+				 	console.log(response);
+				 	var suggestion = $("<li class='collection-item'></li>");
+				 	suggestion.text(response[0].name);
+				 	suggestion.attr("id", response[0].id);
+				 	suggestion.attr("data-summary", response[0].summary);
+				 	suggestion.attr("data-user-rating", response[0].rating);
+				 	suggestion.attr("data-critic-rating", response[0].aggregated_rating);
+				 	suggestion.attr("data-release-date", response[0].release_dates[0].human);
+				 	suggestion.attr("data-background-img", "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png");
+					suggestion.attr("data-thumb", "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id);
+				 	suggestion.attr("data-title", response[0].name);
+				 	$("#search-suggestions").append(suggestion);
+				 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big;/" + response[0].cover.cloudinary_id
+				});
+			}
+		});
+	};
+
+	// Hides drop down menu from search
+	function hideSuggestions () {
+		$("#search-suggestions").addClass("hide");
+		clearTimeout(timer);
+	}
 
     function populatePageFromNewQuery(searchTerm) {
     	var databaseSettings = igdbSettings;
