@@ -95,7 +95,6 @@ $(document).ready(function() {
     	//Animate the search bar
     	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	populatePageFromNewQuery(searchTerm);
-    	$("#main-content").animateCss("bounceInUp");
     });
 
 	function populateSearchSuggestions(searchTerm) {
@@ -171,6 +170,7 @@ $(document).ready(function() {
     function prepPageForContentViewing() {
     	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	setTimeout(function() {
+    		$("#main-content").animateCss("bounceInUp");
 			$("#search-bar-wrapper").attr("class", "hide");
 			$("#main-content").removeClass("hide");
 			$("#video-content").removeClass("hide");
@@ -195,7 +195,7 @@ $(document).ready(function() {
       "accept": "application/vnd.twitchtv.v4+json",
     }
   }
-	  $.ajax(twitchSettings2).done(function (response) {
+	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
