@@ -38,45 +38,26 @@ $(document).ready(function() {
 	 });
 	})
 
-	// twitch API
-	// ======================================================================
-	var twitchSettings = {
-	  "async": true,
-	  "crossDomain": true,
-	  "url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
-	  "method": "GET",
-	  "headers": {
-	    "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
-	    "accept": "application/vnd.twitchtv.v4+json",
-	  }
-	}
-
-	$.ajax(twitchSettings).done(function (response) {
-	  console.log(response);
-	  // console.log(response.streams[0].channel._id);
-
-	  var twitchSettings2 = {
-	    "async": true,
-	    "crossDomain": true,
-	    "url": "https://api.twitch.tv/kraken/streams/" + response.streams[1].channel._id,
-	    "method": "GET",
-	    "headers": {
-	      "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
-	      "accept": "application/vnd.twitchtv.v4+json",
-	    }
-	  }
-
+  // twitch API
+  // ======================================================================
+  var twitchSettings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
+    "method": "GET",
+    "headers": {
+      "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
+      "accept": "application/vnd.twitchtv.v4+json",
+    }
+  }
 	  $.ajax(twitchSettings2).done(function (response) {
 	    console.log(response);
-	    var twitchVid = response._links.channel;
+	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
 	    var twitch = $("<iframe>");
-	    //Alan I made an Ifram variable at the top of the page, take a look! It is globally scoped
-	    // twitch.attr("src", twitchVid);
-	    // $("#twitch-content").append(twitch);
-	  });
-
-	});
+	    twitch.attr("src", twitchVid);
+	    $("#twitch-content").append(twitch);
+	 });
 
 	// youtube API
 	// ======================================================================
@@ -107,4 +88,7 @@ $(document).ready(function() {
 		});
 	}
 	youtubeApiCall();
+
+// DO NOT CODE BELOW THIS LINE: END OF FILE
+// ======================================================================
 });
