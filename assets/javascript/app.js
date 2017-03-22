@@ -130,13 +130,17 @@ $(document).ready(function() {
 
     // Populate the page with information upon clicking the search icon
     $(".label-icon").on("click", function(event) {
-    	// Make it so a game has been searched
-    	gameSearched = true;
-    	var searchTerm = $("#search").val().trim();
-    	//Animate the search bar
-    	$("#search-bar-wrapper").animateCss("bounceOutRight");
-    	populateWithIGDB_ID(searchTerm);
-    	$("#main-content").animateCss("bounceInUp");
+    	if ($("#search").val() === '') {
+
+    	} else {
+	    	// Make it so a game has been searched
+	    	gameSearched = true;
+	    	var searchTerm = $("#search").val().trim();
+	    	//Animate the search bar
+	    	$("#search-bar-wrapper").animateCss("bounceOutRight");
+	    	populateWithIGDB_ID(searchTerm);
+	    	$("#main-content").animateCss("bounceInUp");
+    	}
     });
 
 	// Populate the page with information upon pressing the enter key
