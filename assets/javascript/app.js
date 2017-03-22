@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-
 	var timer;
 
 	var igdbSettings = {
@@ -14,7 +12,6 @@ $(document).ready(function() {
 			"cache-control": "no-cache",
 			"postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
 		}
-
 	}
 	// Make a game searched variable so that 
 	var gameSearched = false;
@@ -218,7 +215,7 @@ $(document).ready(function() {
       "accept": "application/vnd.twitchtv.v4+json",
     }
   }
-	  $.ajax(twitchSettings2).done(function (response) {
+	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
@@ -234,7 +231,7 @@ $(document).ready(function() {
 			 cache: false,
 			 data: $.extend({
 				 key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
-				 q: searchQuery + " game reviews",
+				 q: searchTerm + " game reviews",
 				 part: 'snippet'
 			 }, {maxResults:20,pageToken:$("#pageToken").val()}),
 			 dataType: 'json',
@@ -247,15 +244,16 @@ $(document).ready(function() {
 
 			for (var i = 0; i < 1; i++){
 				iframe = $("<iframe>")
-				var youtubeVid = response.items[i].id.videoId;
+				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
 				iframe.attr("src", youtubeUrl);
 				$("#youtube-content").append(iframe);
 			}
+			youtubeApiCall();
 		});
 	};
-	youtubeApiCall();
+	
 
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
