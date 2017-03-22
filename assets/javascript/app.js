@@ -14,6 +14,24 @@ $(document).ready(function() {
 			"postman-token": "d6b0037e-a737-9698-1fdc-16bb905fd022"
 		}
 	}
+	// Make a game searched variable so that 
+	var gameSearched = false;
+
+	$("#search-link-parent").on("click", function() {
+		$("#search-bar-wrapper").removeClass("hide");
+		$("#search-bar-wrapper").animateCss("bounceInLeft");
+		$("#main-content").addClass("hide");
+	});
+
+    // Add animation functionality
+	$.fn.extend({
+		animateCss: function (animationName) {
+			var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+			this.addClass('animated ' + animationName).one(animationEnd, function() {
+		    	$(this).removeClass('animated ' + animationName);
+			});
+		}
+	});
 
 	$("#search-link-parent").on("click", function() {
 		$("#search-bar-wrapper").removeClass("hide");
@@ -64,10 +82,23 @@ $(document).ready(function() {
 	});
 
 	// Clear value of search bar when "x" is clicked
-	// IMPORTANT!! NEED TO ADD CLOSE OUT FUNCTIONALITY
 	$("#close").on("click", function() {
-		$("#search").val('');
-		hideSuggestions();
+		var searchTerm = $("#search").val().trim();
+		//Animate the bar, but only after a search has been made
+		if (!gameSearched && searchTerm === '') {
+			$("#search-bar-wrapper").animateCss("shake");
+		} else if (!gameSearched && searchTerm !== '') {
+			$("#search").val('');
+			hideSuggestions();
+		} else if (gameSearched && searchTerm !== '') {
+			$("#search-bar-wrapper").addClass("hide");
+			$("#main-content").removeClass("hide");
+		} else {
+			$("#search-bar-wrapper").addClass("hide");
+			$("#main-content").removeClass("hide");
+			$("#search").val('');
+			hideSuggestions();
+		}
 	});
 
 	// Changed value to "keypress" from "keydown" to avoid automatic searches when 
@@ -82,6 +113,7 @@ $(document).ready(function() {
 		clearTimeout(timer);
 		var searchTerm = $("#search").val().trim();
 		if (event.which === 13) {
+			$("#search-bar-wrapper").animateCss("bounceOutRight");
 			event.preventDefault();
 			clearTimeout(timer);
 			populatePageFromNewQuery(searchTerm);
@@ -96,13 +128,36 @@ $(document).ready(function() {
 
     $("#search-bar-wrapper").on("click", ".collection-item", function() {
 		populatePageFromSuggestion($(this));
+		gameSearched = true;
     });
+
+    // Populate the page with information upon clicking the search icon
+    $(".label-icon").on("click", function(event) {
+    	// Make it so a game has been searched
+    	gameSearched = true;
+    	var searchTerm = $("#search").val().trim();
+    	//Animate the search bar
+    	$("#search-bar-wrapper").animateCss("bounceOutRight");
+    	populatePageFromNewQuery(searchTerm);
+    	$("#main-content").animateCss("bounceInUp");
+    });
+
+	// Populate the page with information upon pressing the enter key
+	$("#search").on("keypress", function(event) {
+		var searchTerm = $("#search").val().trim();
+		if (searchTerm !== '' && event.which === 13) {
+			gameSearched = true;
+			$("#search-suggestions").addClass("hide");
+			event.preventDefault();
+			$(".label-icon").click();
+		};
+	});
 
     function populatePageFromNewQuery(searchTerm) {
     	var databaseSettings = igdbSettings;
 		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		$.ajax(databaseSettings).done(function (response) {
-	  		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*"
+	  		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*";
 		  	$.ajax(databaseSettings).done(function (response) {
 			 	console.log(response);
 			 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id;
@@ -135,9 +190,12 @@ $(document).ready(function() {
     };
 
     function prepPageForContentViewing() {
-		$("#search-bar-wrapper").attr("class", "hide");
-		$("#main-content").removeClass("hide");
-		$("#video-content").removeClass("hide");
+    	$("#search-bar-wrapper").animateCss("bounceOutRight");
+    	setTimeout(function() {
+			$("#search-bar-wrapper").attr("class", "hide");
+			$("#main-content").removeClass("hide");
+			$("#video-content").removeClass("hide");
+    	}, 500);
     };
 
 	var searchQuery= "arkham-knight"

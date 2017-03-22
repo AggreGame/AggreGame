@@ -76,6 +76,10 @@ nav .brand-logo {
 	z-index:-1;
 }
 
+.label-icon:hover {
+	cursor: pointer;
+}
+
 @media only screen and (max-width: 500px){
 
 	nav, nav i, nav i.material-icons {
@@ -93,7 +97,7 @@ nav .brand-logo {
 	    transform: translateX(-50%);
 	}
 
-	#search-link {
+	#search-link-parent {
 		font-size: 0px;
 	}
 }
