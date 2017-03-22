@@ -50,7 +50,7 @@ $(document).ready(function() {
       "accept": "application/vnd.twitchtv.v4+json",
     }
   }
-	  $.ajax(twitchSettings2).done(function (response) {
+	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
