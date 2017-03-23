@@ -132,20 +132,20 @@ $(document).ready(function() {
 		settings.url = rawUrl.split(' ').join('+')
 		
 		$.ajax(settings).done(function (response) {
-				for (var i = 0; i < 5; i++) {
-					settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
-					console.log(settings.url)
-					$.ajax(settings).done(function (response) {
+			for (var i = 0; i < 5; i++) {
+				settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
+				console.log(settings.url)
+				$.ajax(settings).done(function (response) {
 				 	console.log(response);
 				 	var suggestion = $("<li class='collection-item suggestion'></li>");
-				 	suggestion.text(response[0].name);
+				 	suggestion.text(getGameName(response));
 				 	suggestion.attr("id", response[0].id);
-				 	suggestion.attr("data-summary", response[0].summary);
-				 	suggestion.attr("data-user-rating", response[0].rating);
-				 	suggestion.attr("data-critic-rating", response[0].aggregated_rating);
-				 	suggestion.attr("data-release-date", response[0].release_dates[0].human);
-				 	suggestion.attr("data-background-img", "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png");
-					suggestion.attr("data-thumb", "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id);
+				 	suggestion.attr("data-summary", getSummary(response));
+				 	suggestion.attr("data-user-rating", getUserRating(response));
+				 	suggestion.attr("data-critic-rating", getCriticRating(response));
+				 	suggestion.attr("data-release-date", getReleaseDate(response));
+				 	suggestion.attr("data-background-img", getBackgroundImage(response));
+					suggestion.attr("data-thumb", getThumb(response));
 				 	suggestion.attr("data-title", response[0].name);
 				 	$("#search-suggestions").append(suggestion);
 				 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big;/" + response[0].cover.cloudinary_id
@@ -153,6 +153,57 @@ $(document).ready(function() {
 			}
 		});
 	};
+
+	function getGameName(response) {
+		if (response[0].name) {
+			return response[0].name;
+		}
+		return "";
+	}
+
+	function getSummary(response) {
+		if (response[0].summary) {
+			return response[0].summary;
+		}
+		return "No summary found";
+	}
+
+	function getUserRating(response) {
+		if (response[0].rating) {
+			return response[0].rating;
+		}
+		return "Unknown";
+	}
+
+	function getCriticRating(response) {
+		if (response[0].aggregated_rating) {
+			return response[0].aggregated_rating;
+		}
+		return "Unknown";
+	}
+
+	function getReleaseDate(response) {
+		if (response[0].release_dates[0].human) {
+			return response[0].release_dates[0].human;
+		}
+		return "Unknown";
+	}
+
+	function getBackgroundImage(response) {
+		if (response[0].screenshots && response[0].screenshots[0].cloudinary_id) {
+			return "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + 
+					response[0].screenshots[0].cloudinary_id + ".png";
+		}
+		return "";
+	}
+
+	function getThumb(response) {
+		if (response[0].cover.cloudinary_id) {
+			return "https://images.igdb.com/igdb/image/upload/t_cover_big/" + 
+					response[0].cover.cloudinary_id;
+		}
+		return "";
+	}
 
 	// Hides drop down menu from search
 	function hideSuggestions () {
@@ -168,17 +219,14 @@ $(document).ready(function() {
 	  		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*";
 		  	$.ajax(databaseSettings).done(function (response) {
 			 	console.log(response);
-			 	var url = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + response[0].cover.cloudinary_id;
-			 	var backgroundImg = "background-image:url('https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + response[0].screenshots[0].cloudinary_id + ".png')";
-
-			 	$("#page-bg").attr("style", backgroundImg);
-				$("#thumbnail").attr("src", url);
-				$("#game-title").html("<strong>" + response[0].name + "</strong>");
-				$("#game-rating-user").text("User Rating: " + parseInt(response[0].rating));
-				$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
-				$("#summary").text(response[0].summary);
-				$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
-				updateMostPopular(response[0].name);
+			 	$("#page-bg").attr("style", getBackgroundImage(response));
+				$("#thumbnail").attr("src", getThumb(response));
+				$("#game-title").html("<strong>" + getGameName(response) + "</strong>");
+				$("#game-rating-user").text("User Rating: " + getUserRating(response));
+				$("#game-rating-critic").text("Critic Rating: " + getCriticRating(response));
+				$("#summary").text(getSummary(response));
+				$("#release-date").text("Release Date: " + getReleaseDate(response));
+				updateMostPopular(getGameName(response));
 			});
 		});
 		prepPageForContentViewing();
@@ -192,8 +240,8 @@ $(document).ready(function() {
 	 	$("#page-bg").attr("style", backgroundImg);
 		$("#thumbnail").attr("src", url);
 		$("#game-title").html("<strong>" + htmlSuggestion.attr("data-title") + "</strong>");
-		$("#game-rating-user").text("User Rating: " + parseInt(htmlSuggestion.attr("data-user-rating")));
-		$("#game-rating-critic").text("Critic Rating: " + parseInt(htmlSuggestion.attr("data-critic-rating")));
+		$("#game-rating-user").text("User Rating: " + htmlSuggestion.attr("data-user-rating"));
+		$("#game-rating-critic").text("Critic Rating: " + htmlSuggestion.attr("data-critic-rating"));
 		$("#summary").text(htmlSuggestion.attr("data-summary"));
 		$("#release-date").text("Release Date: " + htmlSuggestion.attr("data-release-date"));
 		prepPageForContentViewing();
