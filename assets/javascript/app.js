@@ -197,7 +197,7 @@ $(document).ready(function() {
 		gameSearched = true;
     };
 
-	var searchQuery= "arkham-knight"
+	var searchQuery= "Overwatch"
 	var iframe = $("<iframe>")
 	// IGDB API
 	// ======================================================================
@@ -219,10 +219,21 @@ $(document).ready(function() {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
-	    var twitch = $("<iframe>");
-	    twitch.attr("src", twitchVid);
-	    $("#twitch-content").append(twitch);
-	 });
+	    var twitchChannel = response.streams[0].channel.display_name
+	    console.log("TWITCH CHANNEL: " + twitchChannel);
+	    // var twitch = $("<iframe>");
+	    //Allan's stuff
+	    // twitch.attr("src", twitchVid);
+	    // $("#twitch-content").append(twitch);
+		var options = {
+			width: 800,
+			height: 500,
+			channel: twitchChannel,
+		};
+		var player = new Twitch.Player("{twitch-content}", options);
+		player.setVolume(0.5);
+		player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
+	});
 	function youtubeApiCall(term){
 		 $.ajax({
 			 cache: false,
