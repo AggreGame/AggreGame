@@ -183,14 +183,18 @@ $(document).ready(function() {
 	}
 
 	function getReleaseDate(response) {
-		if (response[0].release_dates[0].human) {
+		if (response[0].release_dates && 
+			response[0].release_dates[0] && 
+			response[0].release_dates[0].human) {
 			return response[0].release_dates[0].human;
 		}
 		return "Unknown";
 	}
 
 	function getBackgroundImage(response) {
-		if (response[0].screenshots && response[0].screenshots[0].cloudinary_id) {
+		if (response[0].screenshots && 
+			response[0].screenshots[0] && 
+			response[0].screenshots[0].cloudinary_id) {
 			return "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + 
 					response[0].screenshots[0].cloudinary_id + ".png";
 		}
@@ -198,7 +202,8 @@ $(document).ready(function() {
 	}
 
 	function getThumb(response) {
-		if (response[0].cover.cloudinary_id) {
+		if (response[0].cover &&
+			response[0].cover.cloudinary_id) {
 			return "https://images.igdb.com/igdb/image/upload/t_cover_big/" + 
 					response[0].cover.cloudinary_id;
 		}
