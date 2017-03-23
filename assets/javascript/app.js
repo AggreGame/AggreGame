@@ -219,6 +219,7 @@ $(document).ready(function() {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
+	    // MAX CORRECTION
 	    var twitchChannel = response.streams[0].channel.display_name
 	    console.log("TWITCH CHANNEL: " + twitchChannel);
 	    // var twitch = $("<iframe>");
