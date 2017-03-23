@@ -197,14 +197,14 @@ $(document).ready(function() {
 		gameSearched = true;
     };
 
-	var searchQuery= "Overwatch"
-	var iframe = $("<iframe>")
 	// IGDB API
 	// ======================================================================
 	
 
   // twitch API
   // ======================================================================
+  var searchQuery= "Overwatch"
+  var iframe = $("<iframe>")
   var twitchSettings = {
     "async": true,
     "crossDomain": true,
