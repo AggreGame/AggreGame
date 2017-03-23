@@ -93,8 +93,14 @@ $(document).ready(function() {
 		}
 	});
 
-    $("#search-bar-wrapper").on("click", ".collection-item", function() {
+    $("#search-suggestions").on("click", ".suggestion", function() {
 		populatePageFromSuggestion($(this));
+		gameSearched = true;
+    });
+
+    $("#search-suggestions").on("click", ".popular", function() {
+    	$("#search-suggestions").empty();
+		populatePageFromNewQuery($(this).text());
 		gameSearched = true;
     });
 
@@ -108,6 +114,18 @@ $(document).ready(function() {
     	populatePageFromNewQuery(searchTerm);
     });
 
+    function start() {
+    	$("#search-suggestions").append($("<li class='collection-item'>" + 
+    							"<strong>Most Popular</strong></li>"));
+    	var topFiveSearches = database.ref("popular").orderByChild("count").limitToLast(5);
+    	topFiveSearches.once("value").then(function(snapshot) {
+    		snapshot.forEach(function(entry) {
+    			$("#search-suggestions").append($("<li class='collection-item popular'>" + 
+    												entry.key + "</li>"));
+    		});
+    	});
+    };
+
 	function populateSearchSuggestions(searchTerm) {
 		var settings = igdbSettings;
 		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
@@ -119,7 +137,7 @@ $(document).ready(function() {
 					console.log(settings.url)
 					$.ajax(settings).done(function (response) {
 				 	console.log(response);
-				 	var suggestion = $("<li class='collection-item'></li>");
+				 	var suggestion = $("<li class='collection-item suggestion'></li>");
 				 	suggestion.text(response[0].name);
 				 	suggestion.attr("id", response[0].id);
 				 	suggestion.attr("data-summary", response[0].summary);
@@ -184,6 +202,7 @@ $(document).ready(function() {
 
     function prepPageForContentViewing() {
     	$("#main-search-bar").animateCss("bounceOutRight");
+    	$("#search-suggestions").animateCss("bounceOutRight");
     	setTimeout(function() {
     		$("#main-content").animateCss("bounceInUp");
 			$("#search-bar-wrapper").attr("class", "hide");
@@ -253,7 +272,7 @@ $(document).ready(function() {
 			}
 		});
 	};
-
+	start();
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
 });
