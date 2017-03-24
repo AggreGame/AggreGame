@@ -4,6 +4,56 @@ body {
 	flex-direction: column;
 }
 
+nav, nav i, nav i.material-icons {
+    height: 100px;
+    line-height: 100px;
+}
+
+nav .brand-logo { 
+    font-size: 3rem; 
+}
+
+iframe{
+	margin-left: 15%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+	height: 350px;
+	border-radius: 10px;
+}
+
+
+#logo {
+	left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+#search-suggestions {
+	margin: 0 auto;
+	width: 75vw;
+}
+
+#most-popular {
+	margin: 0 auto;
+	width: 75vw;
+}
+
+.collection-item:hover {
+	cursor: pointer;
+	background-color: #DBD4D4;
+}
+
+#search-bar-wrapper {
+	flex-grow: 1;
+}
+
+#main-search-bar {
+	margin: 0 auto;
+	margin-top: 50px;
+	width: 75vw;
+}
+
 #main-content {
 	flex-grow: 1;
 	display: flex;
@@ -23,3 +73,47 @@ body {
 #youtube-content {
 	flex-grow: 1;
 }
+
+#page-bg {
+	background:url('http://www.geforce.com/sites/default/files-world/screenshots/The_Witcher_3-Wild_Hunt_Skellige%20_is_a_beautiful_place.jpg');
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(10px);
+	position:fixed;
+	background-size: cover;
+    background-repeat: no-repeat;
+	width:103%;
+	height:103%;
+	top:-5px;
+	left:-5px;
+	z-index:-1;
+}
+
+.label-icon:hover {
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 500px) {
+
+	nav, nav i, nav i.material-icons {
+	    height: 50px;
+	    line-height: 50px;
+	}
+
+	nav .brand-logo { 
+	    font-size: 2rem; 
+	}
+
+	#logo {
+		left: 30%;
+	    -webkit-transform: translateX(-50%);
+	    transform: translateX(-50%);
+	}
+
+	#search-link-parent {
+		font-size: 0px;
+	}
+}
+
