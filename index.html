@@ -54,7 +54,7 @@
 							<p id="game-rating-critic">Critic Rating</p>
 						</div>
 						<div class="card-action">
-							<a id="amazon-link" href="#">Buy on Amazon</a>
+							<a id="amazon-link" href="#" target="_blank">Buy on Amazon</a>
 						</div>
 					</div>
 				</div>
@@ -85,11 +85,29 @@
 				<li class="tab col s6"><a href="#twitch-content">Twitch</a></li>
 				<li class="tab col s6"><a href="#youtube-content">YouTube</a></li>
 			</ul>
-			<div id="twitch-content" class="col s12 blue"></div>
+			<div id="twitch-content">
+				<div class="carousel carousel-slider center" data-indicators="true">
+					<div class="carousel-fixed-item center">
+					</div>
+					<div class="carousel-item" href="#one!">
+						<div id="first-stream"></div>
+					</div>
+					<div class="carousel-item" href="#two!">
+						<div id="second-stream"></div>
+					</div>
+					<div class="carousel-item" href="#three!">
+						<div id="third-stream"></div>
+					</div>
+					<div class="carousel-item" href="#four!">
+						<div id="fourth-stream"></div>
+					</div>
+				</div>
+     </div>
 			<div id="youtube-content" class="col s12 red">YouTube Content</div>
 		</div>
 	</div>
-
+	<!-- TWITCH INTERACTIVE EMBED LINK -->
+	<script src= "https://player.twitch.tv/js/embed/v1.js"></script>
 	<script type="text/javascript" src="assets/javascript/app.js"></script>
 </body>
 

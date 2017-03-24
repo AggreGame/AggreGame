@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var timer;
-	// Make a game searched variable so that 
+	// Make a game searched variable so that
 	var gameSearched = false;
 
 	var igdbSettings = {
@@ -87,11 +87,15 @@ $(document).ready(function() {
 		gameSearched = true;
     });
 
+
     // Populate the page with information upon clicking the search icon
     $(".label-icon").on("click", function(event) {
-    	// Make it so a game has been searched
-    	gameSearched = true;
     	var searchTerm = $("#search").val().trim();
+    	//MAX CORRECTION--MAKE BLANK SEARCH INPUT RETURN NOTHING
+    	if (searchTerm === '') {
+    		$("#search-bar-wrapper").animateCss("jello");
+    		return false;
+    	};
     	//Animate the search bar
     	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	populatePageFromNewQuery(searchTerm);
@@ -101,7 +105,7 @@ $(document).ready(function() {
 		var settings = igdbSettings;
 		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		settings.url = rawUrl.split(' ').join('+')
-		
+
 		$.ajax(settings).done(function (response) {
 				for (var i = 0; i < 5; i++) {
 					settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
@@ -131,8 +135,16 @@ $(document).ready(function() {
 		clearTimeout(timer);
 	}
 
+    //MAX CORRECTION---LINK AMAZON WEBSITE WITH GAME TITLE AS KEY WORDS
+    function createAmazonLink(gameTitle) {
+    	var gameKeyWords = gameTitle.replace(/\s/g, '+');
+    	var amazonLink = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords="+ gameKeyWords
+    	$("#amazon-link").attr("href", amazonLink);
+    };
+
     function populatePageFromNewQuery(searchTerm) {
         youtubeApiCall(searchTerm);
+				twitchApiCall(searchTerm);
     	var databaseSettings = igdbSettings;
 		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		$.ajax(databaseSettings).done(function (response) {
@@ -149,6 +161,8 @@ $(document).ready(function() {
 				$("#game-rating-critic").text("Critic Rating: " + parseInt(response[0].aggregated_rating));
 				$("#summary").text(response[0].summary);
 				$("#release-date").text("Release Date: " + response[0].release_dates[0].human);
+				//MAX CORRECTION
+				createAmazonLink(response[0].name);
 			});
 		});
 		prepPageForContentViewing();
@@ -166,6 +180,8 @@ $(document).ready(function() {
 		$("#game-rating-critic").text("Critic Rating: " + parseInt(htmlSuggestion.attr("data-critic-rating")));
 		$("#summary").text(htmlSuggestion.attr("data-summary"));
 		$("#release-date").text("Release Date: " + htmlSuggestion.attr("data-release-date"));
+		//MAX CORRECTION
+		createAmazonLink(htmlSuggestion.attr("data-title"));
 		prepPageForContentViewing();
     };
 
@@ -177,20 +193,18 @@ $(document).ready(function() {
 			$("#main-content").removeClass("hide");
 			$("#video-content").removeClass("hide");
     	}, 500);
+		//MAX CORRECTION--CHANGED GAME SEARCHED TO TRUE WHEN POPULATING PAGE
+		//INSTEAD OF ON CLICK FROM SEARCH ICON (FIXES BUG)
+		gameSearched = true;
     };
-
-	var searchQuery= "arkham-knight"
-	var iframe = $("<iframe>")
-	// IGDB API
-	// ======================================================================
-	
 
   // twitch API
   // ======================================================================
+	function twitchApiCall(searchTerm){
   var twitchSettings = {
     "async": true,
     "crossDomain": true,
-    "url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
+    "url": "https://api.twitch.tv/kraken/search/streams?query=" + searchTerm + "&autoplay=false&muted=true",
     "method": "GET",
     "headers": {
       "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
@@ -199,12 +213,49 @@ $(document).ready(function() {
   }
 	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
-	    var twitchVid = response.streams[0].preview.large;
-	    console.log(twitchVid);
-	    var twitch = $("<iframe>");
-	    twitch.attr("src", twitchVid);
-	    $("#twitch-content").append(twitch);
-	 });
+			var twitchChannel = [];
+			for(var i = 0; i < 4; i++) {
+				twitchChannel.push(response.streams[i].channel.display_name);
+			}
+	    console.log(twitchChannel);
+
+		// add carousel element
+    $('.carousel.carousel-slider').carousel({fullWidth: true});
+
+    // stream options
+		var options = [
+		{
+			width: 800,
+			height: 800,
+			channel: twitchChannel[0],
+		},
+		{
+			width: 800,
+			height: 800,
+			channel: twitchChannel[1],
+		},
+		{
+			width: 800,
+			height: 800,
+			channel: twitchChannel[2],
+		},
+		{
+			width: 800,
+			height: 800,
+			channel: twitchChannel[3],
+		}
+	];
+		var channel1 = new Twitch.Player("first-stream", options[0]);
+		var channel2 = new Twitch.Player("second-stream", options[1]);
+		var channel3 = new Twitch.Player("third-stream", options[2]);
+		var channel4 = new Twitch.Player("fourth-stream", options[3]);
+		player.setVolume(0.5);
+		player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
+	});
+};
+
+// youtube API
+// ======================================================================
 	function youtubeApiCall(term){
 		 $.ajax({
 			 cache: false,
@@ -216,14 +267,14 @@ $(document).ready(function() {
 			 dataType: 'json',
 			 type: 'GET',
 			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search' 
+			 url: 'https://www.googleapis.com/youtube/v3/search'
 		 })
 		.done(function(response) {
 			console.log(response);
 			console.log("YOUTUBE API")
 			for (var i = 0; i < 1; i++){
 				iframe = $("<iframe>")
-				var youtubeVid = response.items[i].id.videoId;	
+				var youtubeVid = response.items[i].id.videoId;
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
 				iframe.attr("src", youtubeUrl);
