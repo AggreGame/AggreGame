@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var timer;
-	// Make a game searched variable so that 
+	// Make a game searched variable so that
 	var gameSearched = false;
 
 	var igdbSettings = {
@@ -126,12 +126,12 @@ $(document).ready(function() {
     };
 
     function start() {
-    	$("#search-suggestions").append($("<li class='collection-item'>" + 
+    	$("#search-suggestions").append($("<li class='collection-item'>" +
     							"<strong>Most Popular</strong></li>"));
     	var topFiveSearches = database.ref("popular").orderByChild("count").limitToLast(5);
     	topFiveSearches.once("value").then(function(snapshot) {
     		snapshot.forEach(function(entry) {
-    			$("#search-suggestions").append($("<li class='collection-item popular'>" + 
+    			$("#search-suggestions").append($("<li class='collection-item popular'>" +
     												entry.key + "</li>"));
     		});
     	});
@@ -141,7 +141,7 @@ $(document).ready(function() {
 		var settings = igdbSettings;
 		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		settings.url = rawUrl.split(' ').join('+')
-		
+
 		$.ajax(settings).done(function (response) {
 			for (var i = 0; i < 5; i++) {
 				settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
@@ -194,8 +194,8 @@ $(document).ready(function() {
 	}
 
 	function getReleaseDate(response) {
-		if (response[0].release_dates && 
-			response[0].release_dates[0] && 
+		if (response[0].release_dates &&
+			response[0].release_dates[0] &&
 			response[0].release_dates[0].human) {
 			return response[0].release_dates[0].human;
 		}
@@ -203,10 +203,10 @@ $(document).ready(function() {
 	}
 
 	function getBackgroundImage(response) {
-		if (response[0].screenshots && 
-			response[0].screenshots[0] && 
+		if (response[0].screenshots &&
+			response[0].screenshots[0] &&
 			response[0].screenshots[0].cloudinary_id) {
-			return "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + 
+			return "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" +
 					response[0].screenshots[0].cloudinary_id + ".png";
 		}
 		return "";
@@ -215,7 +215,7 @@ $(document).ready(function() {
 	function getThumb(response) {
 		if (response[0].cover &&
 			response[0].cover.cloudinary_id) {
-			return "https://images.igdb.com/igdb/image/upload/t_cover_big/" + 
+			return "https://images.igdb.com/igdb/image/upload/t_cover_big/" +
 					response[0].cover.cloudinary_id;
 		}
 		return "";
@@ -288,22 +288,22 @@ $(document).ready(function() {
 
 	// IGDB API
 	// ======================================================================
-	
+
 
   // twitch API
   // ======================================================================
-  var searchQuery= "Overwatch"
-  var iframe = $("<iframe>")
-  var twitchSettings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
-    "method": "GET",
-    "headers": {
-      "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
-      "accept": "application/vnd.twitchtv.v4+json",
-    }
-  }
+		var searchQuery= "Overwatch"
+		var iframe = $("<iframe>")
+		var twitchSettings = {
+			"async": true,
+			"crossDomain": true,
+			"url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
+			"method": "GET",
+			"headers": {
+			  "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
+			  "accept": "application/vnd.twitchtv.v4+json",
+			}
+		}
 	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
@@ -311,16 +311,12 @@ $(document).ready(function() {
 	    // MAX CORRECTION
 	    var twitchChannel = response.streams[0].channel.display_name
 	    console.log("TWITCH CHANNEL: " + twitchChannel);
-	    // var twitch = $("<iframe>");
-	    //Allan's stuff
-	    // twitch.attr("src", twitchVid);
-	    // $("#twitch-content").append(twitch);
 		var options = {
 			width: 800,
 			height: 500,
 			channel: twitchChannel,
 		};
-		var player = new Twitch.Player("{twitch-content}", options);
+		var player = new Twitch.Player("{twitch-player}", options);
 		player.setVolume(0.5);
 		player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
 	});
@@ -336,7 +332,7 @@ $(document).ready(function() {
 			 dataType: 'json',
 			 type: 'GET',
 			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search' 
+			 url: 'https://www.googleapis.com/youtube/v3/search'
 		 })
 		.done(function(response) {
 			console.log(response);
@@ -346,9 +342,9 @@ $(document).ready(function() {
 			$(card).append(iframe);
 			for (var i = 0; i < 1; i++){
 				iframe = $("<iframe>");
-				var youtubeVid = response.items[i].id.videoId;	
+				var youtubeVid = response.items[i].id.videoId;
 				console.log(youtubeVid);
-				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
+				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid;
 				iframe.attr("src", youtubeUrl);
 				$("#youtube-content").append(iframe);
 			}
@@ -360,4 +356,4 @@ $(document).ready(function() {
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
 });
-// Make it so youtube videos only load when clicked then work on the carrousel 
+// Make it so youtube videos only load when clicked then work on the carrousel
