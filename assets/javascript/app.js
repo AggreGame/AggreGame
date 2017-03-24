@@ -222,16 +222,15 @@ $(document).ready(function() {
 			console.log(response);
 			console.log("YOUTUBE API")
 			var card = $("<div>");
+			card.addClass("card large");
+			$(card).append(iframe);
 			for (var i = 0; i < 1; i++){
-				card.addClass("card large");
-				$(card).append(iframe);
-				iframe = $("<iframe>").attr("height", 500);
-				iframe.attr("width", 600);
+				iframe = $("<iframe>");
 				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
 				iframe.attr("src", youtubeUrl);
-				$("#youtube-content").html(iframe);
+				$("#youtube-content").append(iframe);
 			}
 		});
 	};
