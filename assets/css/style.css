@@ -34,6 +34,11 @@ iframe{
 	width: 75vw;
 }
 
+#most-popular {
+	margin: 0 auto;
+	width: 75vw;
+}
+
 .collection-item:hover {
 	cursor: pointer;
 	background-color: #DBD4D4;
