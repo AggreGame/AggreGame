@@ -8,6 +8,7 @@
 	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"  media="screen,projection"/>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="icon" href="#">
@@ -37,7 +38,7 @@
 				</div>
 			</form>
 		</nav>
-	    <ul id="search-suggestions" class="collection hide" style="clear: both;">
+	    <ul id="search-suggestions" class="collection" style="clear: both;">
 		</ul>
 	</div>
 	<!-- end search bar -->
@@ -85,6 +86,7 @@
 				<li class="tab col s6"><a href="#twitch-content">Twitch</a></li>
 				<li class="tab col s6"><a href="#youtube-content">YouTube</a></li>
 			</ul>
+
 			<div id="{twitch-content}" class="col s12 blue"></div>
 			<div id="youtube-content" class="col s12 red">YouTube Content</div>
 		</div>
