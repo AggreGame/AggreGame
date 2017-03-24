@@ -170,14 +170,14 @@ $(document).ready(function() {
 
 	function getUserRating(response) {
 		if (response[0].rating) {
-			return response[0].rating;
+			return parseInt(response[0].rating) + "";
 		}
 		return "Unknown";
 	}
 
 	function getCriticRating(response) {
 		if (response[0].aggregated_rating) {
-			return response[0].aggregated_rating;
+			return parseInt(response[0].aggregated_rating) + "";
 		}
 		return "Unknown";
 	}
