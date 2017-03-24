@@ -341,13 +341,16 @@ $(document).ready(function() {
 		.done(function(response) {
 			console.log(response);
 			console.log("YOUTUBE API")
+			var card = $("<div>");
+			card.addClass("card large");
+			$(card).append(iframe);
 			for (var i = 0; i < 1; i++){
-				iframe = $("<iframe>")
+				iframe = $("<iframe>");
 				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
 				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
 				iframe.attr("src", youtubeUrl);
-				$("#youtube-content").html(iframe);
+				$("#youtube-content").append(iframe);
 			}
 		});
 	};
@@ -357,3 +360,4 @@ $(document).ready(function() {
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
 });
+// Make it so youtube videos only load when clicked then work on the carrousel 

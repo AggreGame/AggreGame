@@ -13,6 +13,16 @@ nav .brand-logo {
     font-size: 3rem; 
 }
 
+iframe{
+	margin-left: 15%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+	height: 350px;
+	border-radius: 10px;
+}
+
+
 #logo {
 	left: 50%;
     -webkit-transform: translateX(-50%);
