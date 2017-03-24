@@ -292,18 +292,18 @@ $(document).ready(function() {
 
   // twitch API
   // ======================================================================
-  var searchQuery= "Overwatch"
-  var iframe = $("<iframe>")
-  var twitchSettings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
-    "method": "GET",
-    "headers": {
-      "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
-      "accept": "application/vnd.twitchtv.v4+json",
-    }
-  }
+		var searchQuery= "Overwatch"
+		var iframe = $("<iframe>")
+		var twitchSettings = {
+			"async": true,
+			"crossDomain": true,
+			"url": "https://api.twitch.tv/kraken/search/streams?query=" + searchQuery,
+			"method": "GET",
+			"headers": {
+			  "client-id": "w5185xydst8a2ijuvc2lwnvdpoqznk",
+			  "accept": "application/vnd.twitchtv.v4+json",
+			}
+		}
 	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
@@ -311,16 +311,12 @@ $(document).ready(function() {
 	    // MAX CORRECTION
 	    var twitchChannel = response.streams[0].channel.display_name
 	    console.log("TWITCH CHANNEL: " + twitchChannel);
-	    // var twitch = $("<iframe>");
-	    //Allan's stuff
-	    // twitch.attr("src", twitchVid);
-	    // $("#twitch-content").append(twitch);
 		var options = {
 			width: 800,
 			height: 500,
 			channel: twitchChannel,
 		};
-		var player = new Twitch.Player("{twitch-content}", options);
+		var player = new Twitch.Player("{twitch-player}", options);
 		player.setVolume(0.5);
 		player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
 	});
@@ -348,7 +344,7 @@ $(document).ready(function() {
 				iframe = $("<iframe>");
 				var youtubeVid = response.items[i].id.videoId;	
 				console.log(youtubeVid);
-				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid
+				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid;
 				iframe.attr("src", youtubeUrl);
 				$("#youtube-content").append(iframe);
 			}
