@@ -40,7 +40,7 @@ $(document).ready(function() {
 
 	$("#search-link-parent").on("click", function() {
 		$("#search-bar-wrapper").removeClass("hide");
-		$("#main-search-bar").animateCss("bounceInLeft");
+		$("#search-bar-wrapper").animateCss("bounceInLeft");
 		$("#main-content").addClass("hide");
 	});
 
@@ -55,7 +55,7 @@ $(document).ready(function() {
 		clearTimeout(timer);
 		var searchTerm = $("#search").val().trim();
 		if (searchTerm !== '' && event.which === 13) {
-			$("#main-search-bar").animateCss("bounceOutRight");
+			$("#search-bar-wrapper").animateCss("bounceOutRight");
 			event.preventDefault();
 			populatePageFromNewQuery(searchTerm);
 		} else {
@@ -78,7 +78,7 @@ $(document).ready(function() {
 		var searchTerm = $("#search").val().trim();
 		//Animate the bar, but only after a search has been made
 		if (!gameSearched && searchTerm === '') {
-			$("#main-search-bar").animateCss("shake");
+			$("#search-bar-wrapper").animateCss("shake");
 		} else if (!gameSearched && searchTerm !== '') {
 			$("#search").val('');
 			hideSuggestions();
@@ -104,15 +104,26 @@ $(document).ready(function() {
 		gameSearched = true;
     });
 
+
     // Populate the page with information upon clicking the search icon
     $(".label-icon").on("click", function(event) {
-    	// Make it so a game has been searched
-    	gameSearched = true;
     	var searchTerm = $("#search").val().trim();
+    	//MAX CORRECTION--MAKE BLANK SEARCH INPUT RETURN NOTHING
+    	if (searchTerm === '') {
+    		$("#search-bar-wrapper").animateCss("jello");
+    		return false;
+    	};
     	//Animate the search bar
-    	$("#main-search-bar").animateCss("bounceOutRight");
+    	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	populatePageFromNewQuery(searchTerm);
     });
+
+    //MAX CORRECTION---LINK AMAZON WEBSITE WITH GAME TITLE AS KEY WORDS
+    function createAmazonLink(gameTitle) {
+    	var gameKeyWords = gameTitle.replace(/\s/g, '+');
+    	var amazonLink = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords="+ gameKeyWords
+    	$("#amazon-link").attr("href", amazonLink);
+    };
 
     function start() {
     	$("#search-suggestions").append($("<li class='collection-item'>" + 
@@ -232,6 +243,7 @@ $(document).ready(function() {
 				$("#summary").text(getSummary(response));
 				$("#release-date").text("Release Date: " + getReleaseDate(response));
 				updateMostPopular(getGameName(response));
+				createAmazonLink(response[0].name);
 			});
 		});
 		prepPageForContentViewing();
@@ -251,11 +263,12 @@ $(document).ready(function() {
 		$("#release-date").text("Release Date: " + htmlSuggestion.attr("data-release-date"));
 		prepPageForContentViewing();
 		updateMostPopular(htmlSuggestion.attr("data-title"));
+		createAmazonLink(htmlSuggestion.attr("data-title"));
     };
 
     function prepPageForContentViewing() {
-    	$("#main-search-bar").animateCss("bounceOutRight");
-    	$("#search-suggestions").animateCss("bounceOutRight");
+    	gameSearched = true;
+    	$("#search-bar-wrapper").animateCss("bounceOutRight");
     	setTimeout(function() {
     		$("#main-content").animateCss("bounceInUp");
 			$("#search-bar-wrapper").attr("class", "hide");
@@ -273,14 +286,14 @@ $(document).ready(function() {
     	});
     };
 
-	var searchQuery= "arkham-knight"
-	var iframe = $("<iframe>")
 	// IGDB API
 	// ======================================================================
 	
 
   // twitch API
   // ======================================================================
+  var searchQuery= "Overwatch"
+  var iframe = $("<iframe>")
   var twitchSettings = {
     "async": true,
     "crossDomain": true,
@@ -291,14 +304,27 @@ $(document).ready(function() {
       "accept": "application/vnd.twitchtv.v4+json",
     }
   }
-	 $.ajax(twitchSettings).done(function (response) {
+	  $.ajax(twitchSettings).done(function (response) {
 	    console.log(response);
 	    var twitchVid = response.streams[0].preview.large;
 	    console.log(twitchVid);
-	    var twitch = $("<iframe>");
-	    twitch.attr("src", twitchVid);
-	    $("#twitch-content").append(twitch);
-	 });
+	    // MAX CORRECTION
+	    var twitchChannel = response.streams[0].channel.display_name
+	    console.log("TWITCH CHANNEL: " + twitchChannel);
+	    // var twitch = $("<iframe>");
+	    //Allan's stuff
+	    // twitch.attr("src", twitchVid);
+	    // $("#twitch-content").append(twitch);
+		var options = {
+			width: 800,
+			height: 500,
+			channel: twitchChannel,
+		};
+		var player = new Twitch.Player("{twitch-content}", options);
+		player.setVolume(0.5);
+		player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
+	});
+
 	function youtubeApiCall(term){
 		 $.ajax({
 			 cache: false,
@@ -328,7 +354,9 @@ $(document).ready(function() {
 			}
 		});
 	};
+
 	start();
+
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
 });

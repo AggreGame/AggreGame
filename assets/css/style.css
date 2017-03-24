@@ -95,7 +95,7 @@ iframe{
 	cursor: pointer;
 }
 
-@media only screen and (max-width: 500px){
+@media only screen and (max-width: 500px) {
 
 	nav, nav i, nav i.material-icons {
 	    height: 50px;
@@ -116,3 +116,4 @@ iframe{
 		font-size: 0px;
 	}
 }
+
