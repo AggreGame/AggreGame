@@ -9,9 +9,19 @@ nav, nav i, nav i.material-icons {
     line-height: 100px;
 }
 
-nav .brand-logo { 
-    font-size: 3rem; 
+nav .brand-logo {
+    font-size: 3rem;
 }
+
+iframe{
+	margin-left: 15%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+	height: 350px;
+	border-radius: 10px;
+}
+
 
 #logo {
 	left: 50%;
@@ -20,6 +30,11 @@ nav .brand-logo {
 }
 
 #search-suggestions {
+	margin: 0 auto;
+	width: 75vw;
+}
+
+#most-popular {
 	margin: 0 auto;
 	width: 75vw;
 }
@@ -80,15 +95,15 @@ nav .brand-logo {
 	cursor: pointer;
 }
 
-@media only screen and (max-width: 500px){
+@media only screen and (max-width: 500px) {
 
 	nav, nav i, nav i.material-icons {
 	    height: 50px;
 	    line-height: 50px;
 	}
 
-	nav .brand-logo { 
-	    font-size: 2rem; 
+	nav .brand-logo {
+	    font-size: 2rem;
 	}
 
 	#logo {
