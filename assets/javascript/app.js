@@ -131,8 +131,15 @@ $(document).ready(function() {
     	var topFiveSearches = database.ref("popular").orderByChild("count").limitToLast(5);
     	topFiveSearches.once("value").then(function(snapshot) {
     		snapshot.forEach(function(entry) {
-    			$("#search-suggestions").append($("<li class='collection-item popular'>" +
-    												entry.key + "</li>"));
+    			var newTerm = $("<li class='collection-item popular'></li>")
+    			$("#search-suggestions").append(newTerm);
+    			newTerm.typeIt({
+					strings: entry.key,
+					lifeLike: false,
+					delay: 0,
+					speed: 10,
+					cursor: false,
+				});
     		});
     	});
     };
