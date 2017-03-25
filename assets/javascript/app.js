@@ -280,7 +280,8 @@ $(document).ready(function() {
     };
 
     function updateMostPopular(term) {
-    	database.ref("popular/" + term).transaction(function(searchTerm) {
+    	var termTrimmed = term.replace(/\./g, "");
+    	database.ref("popular/" + termTrimmed).transaction(function(searchTerm) {
     		if (!searchTerm) {
     			return {count: 1};
 			}
@@ -291,8 +292,6 @@ $(document).ready(function() {
     // twitch API
     // ======================================================================
   	function twitchApiCall(searchQuery) {
-  		$("#twitch-content").empty();
-  		$("#twitch-content").append("<div id='{twitch-player}''></div>");
 		var twitchSettings = {
 			"async": true,
 			"crossDomain": true,
@@ -305,19 +304,18 @@ $(document).ready(function() {
 		}
 		$.ajax(twitchSettings).done(function (response) {
 		    console.log(response);
-		    var twitchVid = response.streams[0].preview.large;
-		    console.log(twitchVid);
-		    // MAX CORRECTION
-		    var twitchChannel = response.streams[0].channel.display_name
-		    console.log("TWITCH CHANNEL: " + twitchChannel);
-			var options = {
-				width: 800,
-				height: 500,
-				channel: twitchChannel,
-			};
-			var player = new Twitch.Player("{twitch-player}", options);
-			player.setVolume(0.5);
-			player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
+				var twitchChannel = [];
+				for(var i = 0; i < 4; i++) {
+					twitchChannel.push(response.streams[i].channel.display_name);
+				}
+		    console.log(twitchChannel);
+				$('#first-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[0] + '&muted=true&autoplay=false');
+	      $('#second-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[1] + '&muted=true&autoplay=false');
+				$('#third-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[2] + '&muted=true&autoplay=false');
+				$('#fourth-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[3] + '&muted=true&autoplay=false');
+
+				// add carousel element
+		    $('.carousel.carousel-slider').carousel({fullWidth: true});
 		});
 	};
 

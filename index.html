@@ -32,7 +32,7 @@
 		<nav id="main-search-bar">
 			<form>
 				<div class="input-field">
-					<input id="search" type="search" autocomplete="off" required placeholder="Twitch streams, reviews, ratings, and more...just enter a title!">
+					<input id="search" type="search" autocomplete="off" required placeholder="Search for a game">
 					<label class="label-icon" for="search"><i class="material-icons">search</i></label>
 					<i class="material-icons" id="close">close</i>
 				</div>
@@ -84,7 +84,59 @@
 				<li class="tab col s6"><a href="#youtube-content">YouTube</a></li>
 			</ul>
 			<div id="twitch-content" class="col s12 blue">
-				<div id="{twitch-player}"></div>
+				<div id="{twitch-player}">
+					<div class="carousel carousel-slider center" data-indicators="true">
+						<div class="carousel-fixed-item center">
+						</div>
+						<div class="carousel-item" href="#one!">
+							<div class="carousel-fixed-item">
+								<iframe
+										id="first-stream"
+										height="600"
+										width="500"
+										frameborder="0"
+										scrolling="no"
+										allowfullscreen="true">
+								</iframe>
+							</div>
+						</div>
+						<div class="carousel-item" href="#two!">
+							<div class="carousel-fixed-item">
+								<iframe
+										id="second-stream"
+										height="600"
+										width="500"
+										frameborder="0"
+										scrolling="no"
+										allowfullscreen="true">
+								</iframe></div>
+						</div>
+						<div class="carousel-item" href="#three!">
+							<div class="carousel-fixed-item">
+								<iframe
+										id="third-stream"
+										height="600"
+										width="500"
+										frameborder="0"
+										scrolling="no"
+										allowfullscreen="true">
+								</iframe>
+							</div>
+						</div>
+						<div class="carousel-item" href="#four!">
+							<div class="carousel-fixed-item">
+								<iframe
+										id="fourth-stream"
+										height="600"
+										width="500"
+										frameborder="0"
+										scrolling="no"
+										allowfullscreen="true">
+								</iframe>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div id="youtube-content" class="col s12 red"></div>
 		</div>
