@@ -120,7 +120,7 @@ $(document).ready(function() {
 
     //MAX CORRECTION---LINK AMAZON WEBSITE WITH GAME TITLE AS KEY WORDS
     function createAmazonLink(gameTitle) {
-    	var gameKeyWords = gameTitle.replace(/\s/g, '+');
+    	var gameKeyWords = gameTitle.replace(/\./g, "").replace(/\s/g, '+');
     	var amazonLink = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords="+ gameKeyWords
     	$("#amazon-link").attr("href", amazonLink);
     };
