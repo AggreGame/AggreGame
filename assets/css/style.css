@@ -9,8 +9,8 @@ nav, nav i, nav i.material-icons {
     line-height: 100px;
 }
 
-nav .brand-logo { 
-    font-size: 3rem; 
+nav .brand-logo {
+    font-size: 3rem;
 }
 
 iframe{
@@ -102,8 +102,8 @@ iframe{
 	    line-height: 50px;
 	}
 
-	nav .brand-logo { 
-	    font-size: 2rem; 
+	nav .brand-logo {
+	    font-size: 2rem;
 	}
 
 	#logo {
@@ -116,4 +116,3 @@ iframe{
 		font-size: 0px;
 	}
 }
-
