@@ -323,25 +323,26 @@ $(document).ready(function() {
 	// YouTube API
 	// ======================================================================
 	function youtubeApiCall(term){
-		 $.ajax({
-			 cache: false,
-			 data: $.extend({
-				 key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
-				 q: term + " game reviews",
-				 part: 'snippet'
-			 }, {maxResults:20,pageToken:$("#pageToken").val()}),
-			 dataType: 'json',
-			 type: 'GET',
-			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search' 
-		 })
+		$("#youtube-content").empty();
+		$.ajax({
+			cache: false,
+			data: $.extend({
+				key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
+				q: term + " game reviews",
+				part: 'snippet'
+			}, {maxResults:20,pageToken:$("#pageToken").val()}),
+			dataType: 'json',
+			type: 'GET',
+			timeout: 5000,
+			url: 'https://www.googleapis.com/youtube/v3/search' 
+		})
 		.done(function(response) {
 			console.log(response);
 			console.log("YOUTUBE API")
 			var card = $("<div>");
 			card.addClass("card large");
 			var iframe = $("<iframe>");
-			$(card).append(iframe);
+			$(card).html(iframe);
 			var youtubeVid = response.items[0].id.videoId;	
 			console.log(youtubeVid);
 			var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid;
