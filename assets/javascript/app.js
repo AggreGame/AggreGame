@@ -291,6 +291,8 @@ $(document).ready(function() {
     // twitch API
     // ======================================================================
   	function twitchApiCall(searchQuery) {
+  		$("#twitch-content").empty();
+  		$("#twitch-content").append("<div id='{twitch-player}''></div>");
 		var twitchSettings = {
 			"async": true,
 			"crossDomain": true,
