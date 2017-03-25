@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var timer;
-	// Make a game searched variable so that 
+	// Make a game searched variable so that
 	var gameSearched = false;
 
 	var igdbSettings = {
@@ -126,12 +126,12 @@ $(document).ready(function() {
     };
 
     function start() {
-    	$("#search-suggestions").append($("<li class='collection-item'>" + 
+    	$("#search-suggestions").append($("<li class='collection-item'>" +
     							"<strong>Most Popular</strong></li>"));
     	var topFiveSearches = database.ref("popular").orderByChild("count").limitToLast(5);
     	topFiveSearches.once("value").then(function(snapshot) {
     		snapshot.forEach(function(entry) {
-    			$("#search-suggestions").append($("<li class='collection-item popular'>" + 
+    			$("#search-suggestions").append($("<li class='collection-item popular'>" +
     												entry.key + "</li>"));
     		});
     	});
@@ -141,7 +141,7 @@ $(document).ready(function() {
 		var settings = igdbSettings;
 		var rawUrl = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		settings.url = rawUrl.split(' ').join('+')
-		
+
 		$.ajax(settings).done(function (response) {
 			for (var i = 0; i < 5; i++) {
 				settings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[i].id + "?fields=*"
@@ -194,8 +194,8 @@ $(document).ready(function() {
 	}
 
 	function getReleaseDate(response) {
-		if (response[0].release_dates && 
-			response[0].release_dates[0] && 
+		if (response[0].release_dates &&
+			response[0].release_dates[0] &&
 			response[0].release_dates[0].human) {
 			return response[0].release_dates[0].human;
 		}
@@ -203,10 +203,10 @@ $(document).ready(function() {
 	}
 
 	function getBackgroundImage(response) {
-		if (response[0].screenshots && 
-			response[0].screenshots[0] && 
+		if (response[0].screenshots &&
+			response[0].screenshots[0] &&
 			response[0].screenshots[0].cloudinary_id) {
-			return "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" + 
+			return "https://images.igdb.com/igdb/image/upload/t_screenshot_big/" +
 					response[0].screenshots[0].cloudinary_id + ".png";
 		}
 		return "";
@@ -215,7 +215,7 @@ $(document).ready(function() {
 	function getThumb(response) {
 		if (response[0].cover &&
 			response[0].cover.cloudinary_id) {
-			return "https://images.igdb.com/igdb/image/upload/t_cover_big/" + 
+			return "https://images.igdb.com/igdb/image/upload/t_cover_big/" +
 					response[0].cover.cloudinary_id;
 		}
 		return "";
@@ -287,10 +287,9 @@ $(document).ready(function() {
     		return {count: searchTerm.count += 1};
     	});
     };
-	
 
-	// twitch API
-	// ======================================================================
+    // twitch API
+    // ======================================================================
   	function twitchApiCall(searchQuery) {
 		var twitchSettings = {
 			"async": true,
@@ -333,7 +332,7 @@ $(document).ready(function() {
 			 dataType: 'json',
 			 type: 'GET',
 			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search' 
+			 url: 'https://www.googleapis.com/youtube/v3/search'
 		 })
 		.done(function(response) {
 			console.log(response);
@@ -355,4 +354,4 @@ $(document).ready(function() {
 // DO NOT CODE BELOW THIS LINE: END OF FILE
 // ======================================================================
 });
-// Make it so youtube videos only load when clicked then work on the carrousel 
+// Make it so youtube videos only load when clicked then work on the carrousel
