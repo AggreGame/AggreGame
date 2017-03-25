@@ -236,7 +236,7 @@ $(document).ready(function() {
 	  		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*";
 		  	$.ajax(databaseSettings).done(function (response) {
 			 	console.log(response);
-			 	$("#page-bg").attr("style", getBackgroundImage(response));
+			 	$("#page-bg").attr("style", "background-image:url(" + getBackgroundImage(response) + ");");
 				$("#thumbnail").attr("src", getThumb(response));
 				$("#game-title").html("<strong>" + getGameName(response) + "</strong>");
 				$("#game-rating-user").text("User Rating: " + getUserRating(response));
@@ -289,8 +289,8 @@ $(document).ready(function() {
     };
 	
 
-  // twitch API
-  // ======================================================================
+	// twitch API
+	// ======================================================================
   	function twitchApiCall(searchQuery) {
 		var twitchSettings = {
 			"async": true,
@@ -320,6 +320,8 @@ $(document).ready(function() {
 		});
 	};
 
+	// YouTube API
+	// ======================================================================
 	function youtubeApiCall(term){
 		 $.ajax({
 			 cache: false,
