@@ -309,10 +309,10 @@ $(document).ready(function() {
 					twitchChannel.push(response.streams[i].channel.display_name);
 				}
 		    console.log(twitchChannel);
-				$('#first-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[0] + '&muted=true&autoplay=false');
-	      $('#second-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[1] + '&muted=true&autoplay=false');
-				$('#third-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[2] + '&muted=true&autoplay=false');
-				$('#fourth-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[3] + '&muted=true&autoplay=false');
+				$('#first-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[0] + '&muted=true&autoplay=false');
+	      		$('#second-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[1] + '&muted=true&autoplay=false');
+				$('#third-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[2] + '&muted=true&autoplay=false');
+				$('#fourth-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[3] + '&muted=true&autoplay=false');
 
 				// add carousel element
 		    $('.carousel.carousel-slider').carousel({fullWidth: true});
