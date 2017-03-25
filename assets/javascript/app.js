@@ -306,7 +306,11 @@ $(document).ready(function() {
 		    console.log(response);
 				var twitchChannel = [];
 				for(var i = 0; i < 4; i++) {
-					twitchChannel.push(response.streams[i].channel.display_name);
+					if (response.streams[i]) {
+						twitchChannel.push(response.streams[i].channel.display_name);
+					} else {
+						twitchChannel.push("");
+					}
 				}
 		    console.log(twitchChannel);
 				$('#first-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[0] + '&muted=true&autoplay=false');
