@@ -116,3 +116,7 @@ iframe{
 		font-size: 0px;
 	}
 }
+
+iframe {
+	padding-top: 20px;
+}
