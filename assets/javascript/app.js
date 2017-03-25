@@ -280,7 +280,8 @@ $(document).ready(function() {
     };
 
     function updateMostPopular(term) {
-    	database.ref("popular/" + term).transaction(function(searchTerm) {
+    	var termTrimmed = term.replace(/\./g, "");
+    	database.ref("popular/" + termTrimmed).transaction(function(searchTerm) {
     		if (!searchTerm) {
     			return {count: 1};
 			}
