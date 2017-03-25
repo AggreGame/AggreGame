@@ -131,8 +131,15 @@ $(document).ready(function() {
     	var topFiveSearches = database.ref("popular").orderByChild("count").limitToLast(5);
     	topFiveSearches.once("value").then(function(snapshot) {
     		snapshot.forEach(function(entry) {
-    			$("#search-suggestions").append($("<li class='collection-item popular'>" +
-    												entry.key + "</li>"));
+    			var newTerm = $("<li class='collection-item popular'></li>")
+    			$("#search-suggestions").append(newTerm);
+    			newTerm.typeIt({
+					strings: entry.key,
+					lifeLike: false,
+					delay: 0,
+					speed: 10,
+					cursor: false,
+				});
     		});
     	});
     };
@@ -306,13 +313,17 @@ $(document).ready(function() {
 		    console.log(response);
 				var twitchChannel = [];
 				for(var i = 0; i < 4; i++) {
-					twitchChannel.push(response.streams[i].channel.display_name);
+					if (response.streams[i]) {
+						twitchChannel.push(response.streams[i].channel.display_name);
+					} else {
+						twitchChannel.push("");
+					}
 				}
 		    console.log(twitchChannel);
-				$('#first-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[0] + '&muted=true&autoplay=false');
-	      $('#second-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[1] + '&muted=true&autoplay=false');
-				$('#third-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[2] + '&muted=true&autoplay=false');
-				$('#fourth-stream').attr('src', 'http://player.twitch.tv/?channel=' + twitchChannel[3] + '&muted=true&autoplay=false');
+				$('#first-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[0] + '&muted=true&autoplay=false');
+	      		$('#second-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[1] + '&muted=true&autoplay=false');
+				$('#third-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[2] + '&muted=true&autoplay=false');
+				$('#fourth-stream').attr('src', 'https://player.twitch.tv/?channel=' + twitchChannel[3] + '&muted=true&autoplay=false');
 
 				// add carousel element
 		    $('.carousel.carousel-slider').carousel({fullWidth: true});
