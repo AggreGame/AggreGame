@@ -228,8 +228,6 @@ $(document).ready(function() {
 	}
 
     function populatePageFromNewQuery(searchTerm) {
-        youtubeApiCall(searchTerm);
-        twitchApiCall(searchTerm);
     	var databaseSettings = igdbSettings;
 		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		$.ajax(databaseSettings).done(function (response) {
@@ -245,6 +243,8 @@ $(document).ready(function() {
 				$("#release-date").text("Release Date: " + getReleaseDate(response));
 				updateMostPopular(getGameName(response));
 				createAmazonLink(response[0].name);
+		        youtubeApiCall(response[0].name);
+        		twitchApiCall(response[0].name);
 			});
 		});
 		prepPageForContentViewing();
