@@ -292,7 +292,6 @@ $(document).ready(function() {
     // twitch API
     // ======================================================================
   	function twitchApiCall(searchQuery) {
-
 		var twitchSettings = {
 			"async": true,
 			"crossDomain": true,
@@ -305,7 +304,6 @@ $(document).ready(function() {
 		}
 		$.ajax(twitchSettings).done(function (response) {
 		    console.log(response);
-
 				var twitchChannel = [];
 				for(var i = 0; i < 4; i++) {
 					twitchChannel.push(response.streams[i].channel.display_name);
@@ -335,7 +333,7 @@ $(document).ready(function() {
 			dataType: 'json',
 			type: 'GET',
 			timeout: 5000,
-			url: 'https://www.googleapis.com/youtube/v3/search'
+			url: 'https://www.googleapis.com/youtube/v3/search' 
 		})
 		.done(function(response) {
 			console.log(response);
@@ -344,7 +342,7 @@ $(document).ready(function() {
 			card.addClass("card large");
 			var iframe = $("<iframe>");
 			$(card).html(iframe);
-			var youtubeVid = response.items[0].id.videoId;
+			var youtubeVid = response.items[0].id.videoId;	
 			console.log(youtubeVid);
 			var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid;
 			iframe.attr("src", youtubeUrl);
