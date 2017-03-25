@@ -228,14 +228,13 @@ $(document).ready(function() {
 	}
 
     function populatePageFromNewQuery(searchTerm) {
-        youtubeApiCall(searchTerm);
     	var databaseSettings = igdbSettings;
 		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?search=" + searchTerm;
 		$.ajax(databaseSettings).done(function (response) {
 	  		databaseSettings.url = "https://igdbcom-internet-game-database-v1.p.mashape.com/games/" + response[0].id + "?fields=*";
 		  	$.ajax(databaseSettings).done(function (response) {
 			 	console.log(response);
-			 	$("#page-bg").attr("style", getBackgroundImage(response));
+			 	$("#page-bg").attr("style", "background-image:url(" + getBackgroundImage(response) + ");");
 				$("#thumbnail").attr("src", getThumb(response));
 				$("#game-title").html("<strong>" + getGameName(response) + "</strong>");
 				$("#game-rating-user").text("User Rating: " + getUserRating(response));
@@ -244,6 +243,8 @@ $(document).ready(function() {
 				$("#release-date").text("Release Date: " + getReleaseDate(response));
 				updateMostPopular(getGameName(response));
 				createAmazonLink(response[0].name);
+		        youtubeApiCall(response[0].name);
+        		twitchApiCall(response[0].name);
 			});
 		});
 		prepPageForContentViewing();
@@ -251,6 +252,7 @@ $(document).ready(function() {
 
     function populatePageFromSuggestion(htmlSuggestion) {
         youtubeApiCall(htmlSuggestion.attr("data-title"));
+        twitchApiCall(htmlSuggestion.attr("data-title"));
 	 	var url = htmlSuggestion.attr("data-thumb");
 	 	var backgroundImg = "background-image:url(" + htmlSuggestion.attr("data-background-img") + ");"
 
@@ -286,14 +288,11 @@ $(document).ready(function() {
     	});
     };
 
-	// IGDB API
-	// ======================================================================
-
-
-  // twitch API
-  // ======================================================================
-		var searchQuery= "Overwatch"
-		var iframe = $("<iframe>")
+    // twitch API
+    // ======================================================================
+  	function twitchApiCall(searchQuery) {
+  		$("#twitch-content").empty();
+  		$("#twitch-content").append("<div id='{twitch-player}''></div>");
 		var twitchSettings = {
 			"async": true,
 			"crossDomain": true,
@@ -304,50 +303,52 @@ $(document).ready(function() {
 			  "accept": "application/vnd.twitchtv.v4+json",
 			}
 		}
-	  $.ajax(twitchSettings).done(function (response) {
-	    console.log(response);
-	    var twitchVid = response.streams[0].preview.large;
-	    console.log(twitchVid);
-	    // MAX CORRECTION
-	    var twitchChannel = response.streams[0].channel.display_name
-	    console.log("TWITCH CHANNEL: " + twitchChannel);
-		var options = {
-			width: 800,
-			height: 500,
-			channel: twitchChannel,
-		};
-		var player = new Twitch.Player("{twitch-player}", options);
-		player.setVolume(0.5);
-		player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
-	});
+		$.ajax(twitchSettings).done(function (response) {
+		    console.log(response);
+		    var twitchVid = response.streams[0].preview.large;
+		    console.log(twitchVid);
+		    // MAX CORRECTION
+		    var twitchChannel = response.streams[0].channel.display_name
+		    console.log("TWITCH CHANNEL: " + twitchChannel);
+			var options = {
+				width: 800,
+				height: 500,
+				channel: twitchChannel,
+			};
+			var player = new Twitch.Player("{twitch-player}", options);
+			player.setVolume(0.5);
+			player.addEventListener(Twitch.Player.PAUSE, () => { console.log('Player is paused!'); });
+		});
+	};
 
+	// YouTube API
+	// ======================================================================
 	function youtubeApiCall(term){
-		 $.ajax({
-			 cache: false,
-			 data: $.extend({
-				 key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
-				 q: term + " game reviews",
-				 part: 'snippet'
-			 }, {maxResults:20,pageToken:$("#pageToken").val()}),
-			 dataType: 'json',
-			 type: 'GET',
-			 timeout: 5000,
-			 url: 'https://www.googleapis.com/youtube/v3/search'
-		 })
+		$("#youtube-content").empty();
+		$.ajax({
+			cache: false,
+			data: $.extend({
+				key: 'AIzaSyDRap3f9X_Bae5wKGY1nmd8wklgFoqxc7A',
+				q: term + " game reviews",
+				part: 'snippet'
+			}, {maxResults:20,pageToken:$("#pageToken").val()}),
+			dataType: 'json',
+			type: 'GET',
+			timeout: 5000,
+			url: 'https://www.googleapis.com/youtube/v3/search' 
+		})
 		.done(function(response) {
 			console.log(response);
 			console.log("YOUTUBE API")
 			var card = $("<div>");
 			card.addClass("card large");
-			$(card).append(iframe);
-			for (var i = 0; i < 1; i++){
-				iframe = $("<iframe>");
-				var youtubeVid = response.items[i].id.videoId;
-				console.log(youtubeVid);
-				var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid;
-				iframe.attr("src", youtubeUrl);
-				$("#youtube-content").append(iframe);
-			}
+			var iframe = $("<iframe>");
+			$(card).html(iframe);
+			var youtubeVid = response.items[0].id.videoId;	
+			console.log(youtubeVid);
+			var youtubeUrl = "https://www.youtube.com/embed/" + youtubeVid;
+			iframe.attr("src", youtubeUrl);
+			$("#youtube-content").append(iframe);
 		});
 	};
 
